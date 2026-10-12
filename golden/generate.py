@@ -44,6 +44,18 @@ STYLE_FILE = PACKAGE_DIR / "taxonomy" / "user_style-v1.json"
 SYSTEM = ("You write realistic, fully fictional chat transcripts between a user and an AI assistant, used as "
           "benchmark data. Follow the turn plan exactly, including every length and shape. Reply with JSON only.")
 
+# What a task's request must contain. The starter-pack definitions alone let the generator drift for these tasks
+# (golden-v2 review: a catalog search became a one-item eligibility check, an option comparison a one-vendor check,
+# a code review a change-ticket gate); see docs/TAXONOMY_REVIEW.md.
+TASK_HINTS = {
+    "retail_and_ecommerce.task.product_search": "The user supplies several catalog items (a list or table) and asks which "
+                                                "of them satisfy the customer's constraints.",
+    "professional_services.task.option_analysis": "The user supplies two or more options and asks how they compare "
+                                                  "against the stated objectives or criteria.",
+    "software_and_it.task.code_review": "The user supplies a code change (a diff or code excerpt) and asks for defects "
+                                        "or requirement gaps in it.",
+}
+
 FOLLOWUP_MEANING = {
     "clarify": "asks the assistant to explain or clarify part of its previous reply",
     "provide_info": "adds a detail about the same item that changes or confirms the answer",
@@ -139,7 +151,8 @@ def build_prompt(session: SessionSeed, segment: SegmentSeed, task: Task, operati
         context = (f"\nEARLIER IN THIS CHAT (context only; do not continue it):\n{lines}\n"
                    f"In this segment the user moves on to {SWITCH_MEANING[segment.switch_in]}.\n")
     return PROMPT.format(
-        n_turns=segment.n_turns, persona=session.persona, task_card=task.card(), operation=segment.operation,
+        n_turns=segment.n_turns, persona=session.persona, operation=segment.operation,
+        task_card=task.card() + (" " + TASK_HINTS[task.id] if task.id in TASK_HINTS else ""),
         operation_definition=operations[segment.operation], industry=segment.industry.replace("_", " "),
         turn_plan="\n".join(plan), context=context, style=_style_examples(segment),
         single_turn_rule=("\n- There is only one turn, so the assistant's reply fully completes the request."

@@ -82,13 +82,21 @@ OPERATION_TIE_BREAKS = {
     "generate": "New non-executable content: a message, report, recommendation or listing. Executable code or "
                 "configuration is code, not generate.",
     "calculate": "Getting the answer requires arithmetic on numbers.",
-    "apply_rules": "Stated criteria, a policy or a checklist are applied to the facts of one item. Comparing two "
-                   "or more sources against each other is reconcile.",
+    "apply_rules": "Stated criteria, a policy or a checklist are applied to the facts of the supplied item(s), e.g. "
+                   "checking one item or filtering a list. Comparing two sources for inconsistencies is reconcile.",
     "reconcile": "Two or more supplied sources (records, documents, logs) are compared against each other.",
     "plan": "An ordered set of dependent steps is chosen under constraints.",
     "code": "The output is meant to run or be applied: source code, tests, a CLI command, a policy or "
             "configuration file, even when the user says 'draft' or 'generate'.",
 }
+
+
+# Task pairs whose starter-pack definitions genuinely overlap (the same text fits both; docs/TAXONOMY_REVIEW.md).
+# Gold labels are kept; the playground reports task accuracy both strictly and with these pairs forgiven.
+KNOWN_OVERLAPS = (
+    ("retail_and_ecommerce.task.order_status", "logistics_and_transport.task.shipment_status"),
+    ("retail_and_ecommerce.task.order_status", "logistics_and_transport.task.delay_investigation"),
+)
 
 
 def load_operations() -> Dict[str, str]:

@@ -2,6 +2,7 @@
   "version": "operations-v1",
   "reviewed": true,
   "note": "Hand-authored from each task's definition in usage-v0.3.0. primary = the operation the task most naturally needs; allowed = operations a realistic request for this task could need instead. Review every row, then set reviewed to true.",
+  "changelog": ["2026-10-12: access_action primary generate -> code (pilot: its outputs are IAM policies / CLI commands); re-approved 2026-10-13"],
   "tasks": {
     "banking_and_lending.task.application_evidence": {"primary": "reconcile", "allowed": ["reconcile", "extract"]},
     "banking_and_lending.task.eligibility": {"primary": "apply_rules", "allowed": ["apply_rules", "calculate"]},
