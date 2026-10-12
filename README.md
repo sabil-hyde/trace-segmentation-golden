@@ -1,154 +1,117 @@
 # trace-segmentation-golden
 
-A golden dataset for measuring any model on two trace-mining tasks:
+A golden dataset for two trace-mining tasks, plus a playground that measures any classifier on it:
 
-- **Segmentation:** at each user turn of a chat, does a new task start here? (yes/no)
-- **Taxonomy classification:** which industry, use case, workflow and task does a segment belong to, and which operation does it need?
+- **Segmentation:** at each user turn of a chat, does a new task start? (yes/no)
+- **Taxonomy:** which of 64 industry tasks (8 industries) does a segment belong to?
 
-The gold labels are **exact by construction**. Code fixes every label before any text exists, and a model only writes the conversation. The current version is **golden-v2**: 500 sessions, 1,500 segments, about 1,000 task boundaries. Every surface shortcut we tested (length, line breaks, first words…) is too weak to find boundaries, so a model has to read the content.
+The labels are **exact by construction**. Code fixes every label from a seed, a model only writes the conversation, and
+a second model family checks it blind.
 
-> Status: generated and machine-verified. **Human review is still pending** (`python -m golden.review`), so treat the labels as unreviewed until then.
+> Status: generated and machine-verified. Human review is pending, so results are provisional.
+
+## The dataset: `data/golden-v2`
+
+| | |
+|---|---|
+| Sessions / segments / boundaries | 500 / 1,500 / 999 (9% of the 11,062 gaps) |
+| Label space | starter-pack `usage-v0.3.0`: 8 industries × 8 tasks = 64 tasks, plus the cost taxonomy's `operation` |
+| Segment lengths | 1–20 user turns, each length at least 40 times; 1–5 segments per session |
+| Boundary types | `same_task_new_object` 35% (hardest), `same_industry_other_task` 35%, `cross_industry` 30% |
+| Hard negatives | 25% of follow-ups are **decoys**: they sound like a switch ("also…", "different question:") but continue the same task |
+| Surface cues | Hidden. User-turn length, line breaks and opening words are seed slots with the same distribution for openers and follow-ups. The best single-cue rule finds boundaries with F1 ≤ 0.26. |
+| Blind verifier (gpt-6-luna) | boundary recall 99%, task agreement 93% |
+| Splits | by session: 150 tune / 349 eval |
+| Generator / cost | `google/gemini-3.8-flash`, about $45 including verification |
+
+**Files:**
+- `seeds.jsonl` is **the gold**: every slot of every segment and turn.
+- `generations.jsonl` holds the text.
+- `verification.jsonl` holds the blind verifier's labels.
+- `quality.jsonl` holds the checks from each generation batch.
+
+## Results: segmentation (eval split, 7,746 gaps)
+
+| classifier | boundary F1 | precision / recall | p50 latency | cost per 1k | failures |
+|---|---|---|---|---|---|
+| word-overlap baseline (`similarity`) | 0.375 | 0.39 / 0.36 | free | $0 | 0 |
+| **Jev** (`typesafe/jev-1.13`), full history | **0.931** | 0.95 / 0.91 | 0.55 s | **$0.20** | 0 |
+| Jev, last 2 turns only | 0.844 | 0.84 / 0.85 | 0.49 s | $0.05 | 0 |
+| Claude Haiku 5.5, full history ¹ | 0.915 | 0.94 / 0.89 | 2.10 s | $0.74 | 95 (content filter) |
+
+Recall by boundary type, and how often decoys are wrongly split:
+
+| | cross-industry | same industry, other task | same task, new item | false splits on decoys |
+|---|---|---|---|---|
+| baseline | 0.56 | 0.43 | 0.13 | 8.7% |
+| Jev, full | 1.00 | 0.98 | 0.77 | 1.1% |
+| Jev, last 2 | 0.98 | 0.94 | 0.65 | 3.3% |
+| Haiku 5.5 ¹ | 0.99 | 0.90 | 0.79 | 1.3% |
+
+**Findings:**
+- **Surface overlap doesn't work:** the baseline reaches F1 0.375.
+- **Jev is the best trade-off:** it's more accurate than Haiku 5.5, 4× cheaper, 4× faster and never failed.
+- **History matters:** with only the last 2 turns, Jev loses 9 points of F1, mostly on same-task-new-item switches and decoys.
+- **The open problem is `same_task_new_object`:** the same kind of work on a different item. Every model misses about a fifth to a third of these.
+
+Thresholds were chosen on the tune split, never on eval. ¹ Run on the export from before the 49-session taxonomy fix (below), which barely changes segmentation.
+
+**Taxonomy:** not benchmarked yet. The playground supports it (`--task tax`) and reports accuracy two ways: strictly, and
+with the known-overlap pairs forgiven.
 
 ## Quick start
 
 ```bash
-git clone https://github.com/sabil-hyde/trace-segmentation-golden && cd trace-segmentation-golden
 python3.12 -m venv .venv && .venv/bin/pip install -r requirements.txt
-.venv/bin/python -m pytest golden/tests -q           # offline, no API key needed
+cp .env.example .env                                  # set OPENROUTER_API_KEY (only needed for API classifiers / generation)
+.venv/bin/python -m pytest -q                         # offline tests
 
 .venv/bin/python -m golden.view && open data/golden-v2/view.html      # read the data as chats
-.venv/bin/python -m golden.checks                                      # quality and shortcut report
+.venv/bin/python -m golden.export --unreviewed                         # build seg.jsonl / tax.jsonl
+.venv/bin/python -m playground.run --task seg --classifier jev --fit-threshold
+.venv/bin/python -m playground.compare                                 # table over all runs -> runs/COMPARISON.md
+./experiments.sh                                                       # reproduce the results above
 ```
 
-Generating new data needs an [OpenRouter](https://openrouter.ai) key. Copy `.env.example` to `.env` and set `OPENROUTER_API_KEY`.
+**Each run** writes `runs/<time>_<task>_<classifier>_<variant>/`:
+- `manifest.json`: dataset sha256, the exact question sent, config, threshold, hardware;
+- `metrics.json`: quality, slices, latency, cost and failures;
+- `predictions.jsonl` and `report.md`: per-item outputs and every mistake. These two are git-ignored, and re-running rebuilds them.
 
-## What's in the repo
+**Options:**
+- `--task seg`: `--context full|last2`.
+- `--task tax`: `--level task|industry` and `--view segment|first_turn`.
+- Both: `--sample N` takes a stratified sample.
 
-```
-golden/                  the pipeline (one module per step)
-  taxonomy.py            label space: 64 tasks + 10 operations + the task->operation table
-  seeds.py               gold slots, fixed from a random seed before any text exists
-  generate.py            a cheap model writes text for the slots; code rejects bad text and repairs it
-  verify.py              another model family re-labels everything blind (no gold shown)
-  checks.py              quality and shortcut checks, run after every batch
-  view.py                HTML viewer: sessions as chats, with gold slots and boundaries marked
-  review.py              human accept/reject of every session
-  export.py              accepted sessions -> seg.jsonl / tax.jsonl / manifest.json
-  style_mining.py        one-off: mines how users in open traces write (feeds the generator's style)
-  taxonomy/              frozen label files (see "Label space")
-  vendor/                small, unchanged copies from Hyde-Inc/trace-mining (see vendor/__init__.py)
-  tests/                 offline tests
-data/
-  golden-v2/             the dataset (current)
-  golden-v1/             the first full version, kept as reference for what went wrong (see docs/PROCESS.md)
-docs/PROCESS.md          how the dataset was built, what failed in v1, how v2 fixes it
-```
+**Adding a classifier:** subclass `playground.classifiers.base.Classifier`, implement
+`answer(spec, state) -> Answer(probs, cost_usd, cost_basis, ...)`, and add one branch to `playground.classifiers.make`.
 
-Each data folder holds:
-
-| file | content |
-|---|---|
-| `seeds.jsonl` | **the gold**: one session per line, every slot of every segment and turn |
-| `generations.jsonl` | the generated text per segment, plus model, prompt hash, attempts, rejection reasons and cost |
-| `verification.jsonl` | the blind verifier's boundaries, task and operation per segment, and its disagreements |
-| `quality.jsonl` | the quality-check table after every generation batch |
-
-## How the labels stay exact
+## Repo
 
 ```
-seeds.py      code fixes every label slot from a seed                 -> seeds.jsonl        (the gold)
-generate.py   google/gemini-3.8-flash writes text for those slots     -> generations.jsonl
-              code checks each turn; bad turns are repaired or the segment is regenerated
-verify.py     openai/gpt-6-luna re-labels everything blind             -> verification.jsonl
-checks.py     quality + shortcut checks after every batch              -> quality.jsonl
-review.py     a human accepts or rejects each session                  -> review.jsonl
-export.py     accepted sessions only                                   -> seg.jsonl, tax.jsonl, manifest.json
+golden/        dataset pipeline: taxonomy → seeds → generate (+ blind verify, checks) → view → review → export
+  taxonomy/    label files: usage/cost lookups, task→operation table, real-user style examples
+  vendor/      small unchanged copies from Hyde-Inc/trace-mining (LLM client, turn parser, segmentation prompt)
+playground/    classifiers (similarity, tfidf, jev, llm), run loop, metrics, comparison
+data/golden-v2 the dataset
+runs/          the four runs above (manifest + metrics)
 ```
 
-## Label space
+**Regenerating the dataset:** `python -m golden.seeds --sessions 500 --seed 3 --min-per-length 40`, then
+`python -m golden.generate`. That takes about 4 hours and costs about $45. Checks print after every batch, and the run
+can be resumed if stopped.
 
-- **Tasks:** the starter-pack usage taxonomy `golden/taxonomy/lookups/usage-v0.3.0.json`.
-  - 8 industries: banking & lending, healthcare, insurance, logistics & transport, manufacturing, professional services, retail & e-commerce, software & IT.
-  - Each industry has 2 use cases → 4 workflows → 8 tasks: **64 tasks**.
-  - The file has no parent ids. `taxonomy.py` derives them from its fixed order and fails loudly if that order changes.
-- **Operations:** the cost taxonomy's `operation` dimension, `golden/taxonomy/lookups/cost-v0.3.0.json`.
-  - 10 values: classify, extract, summarize, transform, generate, calculate, apply_rules, reconcile, plan, code.
-  - `taxonomy.py` adds one tie-break rule per operation for pairs that are easy to confuse.
-- **Which operations a task may use:** `golden/taxonomy/operations-v1.json`. It is hand-written and reviewed.
+## Decisions
 
-## Slots per segment (golden-v2)
+- **Taxonomy:** `usage-v0.3.0`, without the 12 shared cross-industry tasks or v0.4.0's telecom and travel additions.
+- **Operation table:** `access_action` defaults to `code`. One tie-break rule per operation; `apply_rules` covers one item or a list.
+- **The 49 drifting sessions:** these contained `product_search`, `option_analysis` and `code_review`. They were regenerated with task hints, which cut verifier disagreement on those tasks from 44/69 to 4/69.
+- **Overlapping tasks:** retail `order_status` and logistics `shipment_status` / `delay_investigation` genuinely overlap, so their gold labels are kept and taxonomy accuracy is reported two ways (`golden.taxonomy.KNOWN_OVERLAPS`).
 
-A **segment** is one task: one goal on one item, 1–20 user turns, each with an assistant reply. A **session** has 1–5 segments and at most 40 user turns.
+## Limits
 
-| slot | values | why |
-|---|---|---|
-| industry / use case / workflow / task | 64 tasks, least-used first (each 23–26×) | taxonomy gold |
-| operation | the task's primary operation half the time, otherwise any allowed one | taxonomy gold |
-| `n_turns` | 1–20, every length at least 40× | segment lengths of all sizes |
-| `switch_in` | `same_task_new_object` 35%, `same_industry_other_task` 35%, `cross_industry` 30% | boundary types, from hardest to easiest |
-| `transition_style` | `no_marker` 35%, `blended` 35% (reacts, then pivots in the same message), `explicit` 15%, `misleading_cue` 15% ("also…" but a new item) | vague, realistic boundaries |
-| `user_lengths` | 50 / 100 / 200 / 400 / 800 chars per user turn, balanced within each segment | openers and follow-ups get the same length distribution |
-| `turn_shapes` | `prose` or `pasted` (a list, table, log or excerpt); depends only on length | line breaks can't mark openers |
-| `lead_ins` | none / reaction ("got it") / cue ("oh and") / marker ("different question:") at the same shares for openers and follow-ups | first words can't mark openers |
-| `followup_kinds` | clarify, provide_info, correct, refine, confirm, ask_detail, paste_more, and 25% **decoys** (sound like a switch, same item and goal) | hard negatives |
-
-Rules every segment follows (in the generator prompt, enforced by code where possible):
-- each segment works on a new item that no earlier segment touched, and is never a step or variant of an earlier goal;
-- no batch phrasing ("same for the next one");
-- no taxonomy names and no meta talk ("new task");
-- no tools: the assistant only analyses or drafts from what the user wrote.
-
-The segment definition is the one trace-mining uses: `golden/vendor/segmentation.py`.
-
-## golden-v2 at a glance
-
-| | golden-v1 (reference) | **golden-v2** |
-|---|---|---|
-| Sessions / segments | 500 / 1,500 | 500 / 1,500 |
-| Failed segments | 6 | 1 (`s3-451-g1`, excluded at export) |
-| Boundaries found by user-turn length alone (F1) | **0.977** | **0.21** |
-| … by line breaks / first two words | 0.94 / 0.55 | 0.16 / 0.27 |
-| Opener vs follow-up median length | 5.6× | 1.16× |
-| Verifier boundary recall / precision | — | 98.8% / 54% |
-| Verifier task / operation agreement | 93.8% / 89% | 90.3% / 84% |
-| Cost (generate + verify) | $25.5 | $43.7 |
-
-Reading the verifier numbers:
-- **High recall:** real boundaries stay visible in the text.
-- **Low precision:** decoys make models split where the task actually continues. That's the intended difficulty. On a 28-session trial, Claude Sonnet 5.5 also reached only boundary F1 0.74.
-- **Gold quality:** reading every case where two models disagreed with the gold suggested about 0.5% of follow-ups drifted into adjacent work. Human review should catch those.
-
-## Run the pipeline
-
-```bash
-source .venv/bin/activate
-python -m golden.seeds --sessions 500 --seed 3 --min-per-length 40      # writes data/golden-v2/seeds.jsonl
-python -m golden.generate --concurrency 14     # text + blind verify + checks per batch; resumable
-python -m golden.view                          # data/golden-v2/view.html, works on partial runs too
-python -m golden.review                        # human: accept/reject every session
-python -m golden.export                        # seg.jsonl, tax.jsonl, manifest.json from accepted sessions
-```
-
-- **New version or trial:** pass `--data-dir data/<name>` to every step, for example `--data-dir data/trial --limit 20` for a trial.
-- **Stop and resume:** Ctrl-C at any time, then re-run `generate` to resume. Sessions lost to a network outage are retried automatically.
-- **Cost and time:** about $0.03 per segment, so roughly $40 and 3–3.5 hours for 500 sessions at concurrency 14. Keep the machine awake (`caffeinate -is` on macOS).
-- **Checks:** they warn and never stop the run. The ones to watch: shortcut F1 ≥ 0.5, verifier boundary recall < 85%, failed segments > 2%.
-
-## Using the exported data
-
-- **`seg.jsonl`:** one row per gap before user turn k ≥ 1.
-  - `conversation_so_far` is the full prefix from turn 0, never truncated.
-  - `new_user_request` is the k-th user turn.
-  - `gold` is `"true"` where a segment starts.
-  - Slicing fields: `switch_in`, `transition_style`, `followup_kind`, `user_len_bucket`, `segment_len_before` and `segment_len_after`.
-- **`tax.jsonl`:** one row per segment, with its text and gold `industry`, `use_case`, `workflow`, `task` and `operation`.
-- **Splits:** by whole session, 30% `tune` / 70% `eval`. Tune prompts and thresholds on `tune` only.
-- **Do not rank** Gemini- or GPT-family models on this data: Gemini wrote it and GPT filtered it.
-
-## Known limits
-
-- **Synthetic chat, not real agent traffic:** no tools and no system prompts. The 8 starter-pack industries don't match the open traces' domains (telecom and travel are missing).
-- **Boundaries are rare:** about 9% of gaps. Report precision/recall/F1, not accuracy.
-- **Operation is effectively multi-label:** score it as a secondary label.
-- **Some tasks overlap:** retail order status vs logistics shipment status, code review vs release check. Verifier task agreement is about 90%.
-- **Long contexts:** assistant replies are not capped, so long sessions can exceed small-context models.
+- **Synthetic chat, not real agent traffic:** no tools and no system prompts.
+- **Don't rank Gemini or GPT models on this data:** Gemini wrote it and GPT verified it.
+- **Boundaries are rare** (9% of gaps): report P/R/F1, not accuracy.
+- **Operation is effectively multi-label:** treat it as a secondary label.
+- **No gold "unknown" inputs,** so rejection of unknown inputs can't be measured yet.
