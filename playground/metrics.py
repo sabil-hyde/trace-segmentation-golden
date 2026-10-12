@@ -67,7 +67,19 @@ def seg_quality(rows: List[Dict]) -> Dict:
     return out
 
 
-def tax_quality(rows: List[Dict], industry_of: Dict[str, str]) -> Dict:
+def overlap_forgiven(row: Dict, level: str) -> bool:
+    """A miss that only swaps one task of a known overlap pair for its partner (or the partner's industry)."""
+    from golden.taxonomy import KNOWN_OVERLAPS
+    gold_task = row["slices"].get("task")
+    for a, b in KNOWN_OVERLAPS:
+        if gold_task in (a, b):
+            partner = b if gold_task == a else a
+            if row["label"] == (partner if level == "task" else partner.split(".")[0]):
+                return True
+    return False
+
+
+def tax_quality(rows: List[Dict], industry_of: Dict[str, str], level: str = "task") -> Dict:
     per = {}
     for c in sorted({r["gold"] for r in rows}):
         tp = sum(r["gold"] == c and r["label"] == c for r in rows)
@@ -76,6 +88,9 @@ def tax_quality(rows: List[Dict], industry_of: Dict[str, str]) -> Dict:
         per[c] = {**_prf(tp, fp, fn), "support": tp + fn}
     confusions = Counter((r["gold"], r["label"]) for r in rows if r["gold"] != r["label"])
     out = {"accuracy": round(sum(r["gold"] == r["label"] for r in rows) / max(len(rows), 1), 4),
+           # the same accuracy with known-overlap swaps counted as right (golden.taxonomy.KNOWN_OVERLAPS)
+           "accuracy_overlap_forgiven": round(sum(r["gold"] == r["label"] or overlap_forgiven(r, level)
+                                                  for r in rows) / max(len(rows), 1), 4),
            "macro_f1": round(sum(v["f1"] for v in per.values()) / max(len(per), 1), 4),
            "per_class": per, "top_confusions": [[g, p, n] for (g, p), n in confusions.most_common(15)]}
     if industry_of:      # task-level run: how often is at least the industry right?
@@ -98,7 +113,7 @@ def compute(run_dir: Path) -> Dict:
         if task["level"] == "task":
             from golden.taxonomy import load_tasks
             industry_of = {t.id: t.industry for t in load_tasks().values()}
-        quality = tax_quality(answered, industry_of)
+        quality = tax_quality(answered, industry_of, task["level"])
     latencies = [p["latency_s"] for p in preds if p["latency_s"] is not None]
     known = [p["cost_usd"] for p in preds if p["cost_usd"] is not None]
     bases = sorted({p["cost_basis"] for p in preds if p["error"] is None})
@@ -133,7 +148,7 @@ def headline(m: Dict) -> str:
     q = m["quality"]
     quality = (f"F1 {q['boundary']['f1']} (P {q['boundary']['precision']}, R {q['boundary']['recall']}), "
                f"false splits {q['false_splits']}, missed {q['missed_splits']}" if m["task"]["task"] == "seg"
-               else f"accuracy {q['accuracy']}, macro-F1 {q['macro_f1']}"
+               else f"accuracy {q['accuracy']} (overlaps forgiven {q['accuracy_overlap_forgiven']}), macro-F1 {q['macro_f1']}"
                + (f", industry (derived) {q['derived_industry_accuracy']}" if "derived_industry_accuracy" in q else ""))
     s, c, r = m["speed"], m["cost"], m["reliability"]
     return (f"  {quality}\n  p50 {s['p50_latency_s']}s p95 {s['p95_latency_s']}s, {s['throughput_per_s']}/s; "

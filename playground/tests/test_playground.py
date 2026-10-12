@@ -122,3 +122,13 @@ def test_tax_metrics_with_derived_industry(tmp_path):
     assert q["accuracy"] == pytest.approx(0.6667, abs=1e-4)
     assert q["derived_industry_accuracy"] == 1.0                                       # the miss stays in healthcare
     assert q["top_confusions"] == [[a, b, 1]]
+
+
+def test_known_overlap_is_forgiven_only_for_its_partner(tmp_path):
+    order, ship = "retail_and_ecommerce.task.order_status", "logistics_and_transport.task.shipment_status"
+    other = "logistics_and_transport.task.route_plan"
+    preds = [{"id": "1", "gold": order, "label": ship}, {"id": "2", "gold": order, "label": other}]
+    for p in preds:
+        p.update(probs={p["label"]: 1.0}, slices={"task": p["gold"]})
+    q = _write_run(tmp_path, {"task": "tax", "level": "task", "view": "segment", "n_classes": 65}, preds)["quality"]
+    assert q["accuracy"] == 0.0 and q["accuracy_overlap_forgiven"] == 0.5

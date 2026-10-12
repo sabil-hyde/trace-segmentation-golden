@@ -20,7 +20,7 @@ def rows():
                        f" · decoy FS {q['slices']['false_split_rate_by_followup_kind'].get('decoy', {}).get('rate', 0):.0%}")
         else:
             config = f"{t['level']} ({t['n_classes']}) · {t['view']}"
-            quality = (f"acc {q['accuracy']:.3f} · mF1 {q['macro_f1']:.3f}"
+            quality = (f"acc {q['accuracy']:.3f} (overlap-forgiven {q['accuracy_overlap_forgiven']:.3f}) · mF1 {q['macro_f1']:.3f}"
                        + (f" · ind {q['derived_industry_accuracy']:.3f}" if "derived_industry_accuracy" in q else ""))
         yield [m["run"][:16], t["task"], m["classifier"] + (f" ({m['model']})" if m.get("model") else ""), config,
                str(m["dataset"]["n"]), quality, f"{s['p50_latency_s']}", f"{s['p95_latency_s']}", f"{s['throughput_per_s']}",

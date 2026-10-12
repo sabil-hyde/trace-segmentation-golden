@@ -123,7 +123,7 @@ class TaxTask:
         return self.industry_of.get(label, label)
 
     def slices(self, row: Dict) -> Dict:
-        return {"industry": row["gold"]["industry"], "n_turns": row.get("n_turns")}
+        return {"industry": row["gold"]["industry"], "task": row["gold"]["task"], "n_turns": row.get("n_turns")}
 
     def config(self) -> Dict:
         return {"task": self.name, "level": self.level, "view": self.view, "n_classes": len(self.labels),
