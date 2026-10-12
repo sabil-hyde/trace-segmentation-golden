@@ -1,8 +1,10 @@
 """Export the human-accepted sessions as the golden dataset.
 
-    python -m golden.export
+    python -m golden.export                 # accepted sessions          -> <data dir>/export/
+    python -m golden.export --unreviewed    # every verified session     -> <data dir>/export-unreviewed/
 
-Writes into <data dir>:
+--unreviewed is for building and testing classifiers before review is done: every row carries
+review_status "unreviewed", so results on it are provisional. Writes into the export folder:
   sessions.jsonl   canonical: gold slots + turns per segment
   seg.jsonl        one row per gap before user turn k >= 1; gold "true" where a segment starts
   tax.jsonl        one row per segment; gold industry / use_case / workflow / task / operation
@@ -98,33 +100,40 @@ def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--data-dir", type=Path, default=DEFAULT_DATA_DIR)
     ap.add_argument("--split-seed", type=int, default=0)
+    ap.add_argument("--unreviewed", action="store_true", help="export every verified session, marked unreviewed")
     args = ap.parse_args()
     d = args.data_dir
+    out = d / ("export-unreviewed" if args.unreviewed else "export")
+    out.mkdir(parents=True, exist_ok=True)
+    status = "unreviewed" if args.unreviewed else "accepted"
 
     seeded = read_seeds(d / "seeds.jsonl")
     generated = load_sessions(d, only_ok=False)
     usable = [s for s in generated if s.ok]
     reviews = read_jsonl_by_id(d / "review.jsonl")
     verification = read_jsonl_by_id(d / "verification.jsonl")
-    accepted = [s for s in usable if reviews.get(s.seed.session_id, {}).get("decision") == "accept"]
+    if args.unreviewed:
+        accepted = [s for s in usable if s.seed.session_id in verification]
+    else:
+        accepted = [s for s in usable if reviews.get(s.seed.session_id, {}).get("decision") == "accept"]
     if not accepted:
-        raise SystemExit("no accepted sessions yet: run golden.review first")
+        raise SystemExit("no accepted sessions yet: run golden.review first (or export --unreviewed)")
 
     splits = split_of([s.seed.session_id for s in accepted], args.split_seed)
-    seg = [r for s in accepted for r in seg_rows(s, splits[s.seed.session_id])]
-    tax = [r for s in accepted for r in tax_rows(s, splits[s.seed.session_id])]
-    write_jsonl(d / "sessions.jsonl", [{"session_id": s.seed.session_id, "split": splits[s.seed.session_id],
+    seg = [{**r, "review_status": status} for s in accepted for r in seg_rows(s, splits[s.seed.session_id])]
+    tax = [{**r, "review_status": status} for s in accepted for r in tax_rows(s, splits[s.seed.session_id])]
+    write_jsonl(out / "sessions.jsonl", [{"session_id": s.seed.session_id, "split": splits[s.seed.session_id],
                                         "persona": s.seed.persona,
                                         "segments": [{**asdict(g), "turns": t} for g, t in s.segment_turns()]}
                                        for s in accepted])
-    write_jsonl(d / "seg.jsonl", seg)
-    write_jsonl(d / "tax.jsonl", tax)
+    write_jsonl(out / "seg.jsonl", seg)
+    write_jsonl(out / "tax.jsonl", tax)
 
     segments = [g for s in accepted for g in s.seed.segments]
     checked = [verification[s.seed.session_id] for s in accepted if s.seed.session_id in verification]
     seg_checks = [g for v in checked for g in v["segments"]]
     manifest = {
-        "dataset": d.name,
+        "dataset": d.name, "review_status": status,
         "counts": {"seeded_sessions": len(seeded), "generated": len(generated), "generation_ok": len(usable),
                    "reviewed": sum(s.seed.session_id in reviews for s in usable), "accepted": len(accepted),
                    "rejected": sum(r["decision"] == "reject" for r in reviews.values()),
@@ -151,9 +160,9 @@ def main() -> None:
         "cost_usd": {"generation": round(sum(g["cost_usd"] for s in generated for g in s.generation["segments"]), 4),
                      "verification": round(sum(v["cost_usd"] for v in verification.values()), 4)},
     }
-    (d / "manifest.json").write_text(json.dumps(manifest, indent=1))
+    (out / "manifest.json").write_text(json.dumps(manifest, indent=1))
     print(f"{len(accepted)} sessions -> {len(seg)} seg rows ({manifest['counts']['positive_gaps']} boundaries), "
-          f"{len(tax)} tax rows in {d}")
+          f"{len(tax)} tax rows in {out}")
 
 
 if __name__ == "__main__":

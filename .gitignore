@@ -7,3 +7,6 @@ __pycache__/
 data/**/view.html
 # written by review/export; commit them deliberately when a reviewed version is frozen
 data/**/review.jsonl
+# rebuilt with: python -m golden.export [--unreviewed] (deterministic; seg.jsonl is ~170 MB)
+data/**/export/
+data/**/export-unreviewed/
