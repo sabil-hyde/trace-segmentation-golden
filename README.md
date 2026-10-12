@@ -1,4 +1,4 @@
-# trace-segmentation-golden
+# trace-segmentation-playground
 
 A test set for two questions we ask about agent traces, and a small tool for scoring any model against it.
 
