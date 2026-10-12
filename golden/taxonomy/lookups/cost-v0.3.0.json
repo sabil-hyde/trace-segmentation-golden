@@ -1,0 +1,295 @@
+{
+  "version": "0.3.0",
+  "unit": "model_request",
+  "industry": "all",
+  "dimensions": [
+    {
+      "id": "input_modality",
+      "name": "Input modality",
+      "definition": "Modalities actually supplied to this model request. OCR text is text; its source document does not make the request multimodal.",
+      "allow_multiple": true,
+      "values": [
+        {
+          "id": "text",
+          "name": "Text",
+          "definition": "Readable text supplied to the model.",
+          "examples": [
+            "A prompt containing extracted document text."
+          ]
+        },
+        {
+          "id": "image",
+          "name": "Image",
+          "definition": "Images supplied to the model.",
+          "examples": [
+            "A scanned page attached as an image."
+          ]
+        },
+        {
+          "id": "audio",
+          "name": "Audio",
+          "definition": "Audio supplied to the model.",
+          "examples": [
+            "A recording supplied for transcription."
+          ]
+        },
+        {
+          "id": "video",
+          "name": "Video",
+          "definition": "Video supplied to the model.",
+          "examples": [
+            "A clip supplied for event analysis."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "operation",
+      "name": "Required operation",
+      "definition": "Operations required by the request; multiple operations can apply. These are not industry use cases.",
+      "allow_multiple": true,
+      "values": [
+        {
+          "id": "classify",
+          "name": "Classify",
+          "definition": "Select among defined alternatives.",
+          "examples": [
+            "Choose a document type."
+          ]
+        },
+        {
+          "id": "extract",
+          "name": "Extract",
+          "definition": "Return information explicitly present in supplied evidence.",
+          "examples": [
+            "Extract an invoice amount."
+          ]
+        },
+        {
+          "id": "summarize",
+          "name": "Summarize",
+          "definition": "Condense supplied information while preserving relevant meaning.",
+          "examples": [
+            "Summarize an incident timeline."
+          ]
+        },
+        {
+          "id": "transform",
+          "name": "Transform",
+          "definition": "Change representation or language while preserving meaning.",
+          "examples": [
+            "Translate supplied instructions."
+          ]
+        },
+        {
+          "id": "generate",
+          "name": "Generate",
+          "definition": "Create new content under stated requirements.",
+          "examples": [
+            "Draft a product description."
+          ]
+        },
+        {
+          "id": "calculate",
+          "name": "Calculate",
+          "definition": "Perform numerical or symbolic operations.",
+          "examples": [
+            "Compute a total from line items."
+          ]
+        },
+        {
+          "id": "apply_rules",
+          "name": "Apply rules",
+          "definition": "Apply provided criteria to facts.",
+          "examples": [
+            "Check eligibility against supplied rules."
+          ]
+        },
+        {
+          "id": "reconcile",
+          "name": "Reconcile evidence",
+          "definition": "Compare sources and resolve or report inconsistencies.",
+          "examples": [
+            "Compare names across application documents."
+          ]
+        },
+        {
+          "id": "plan",
+          "name": "Plan",
+          "definition": "Choose dependent steps subject to constraints.",
+          "examples": [
+            "Plan a sequence of service changes."
+          ]
+        },
+        {
+          "id": "code",
+          "name": "Create or modify code",
+          "definition": "Produce executable code or configuration changes.",
+          "examples": [
+            "Implement a requested function."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "evidence_scope",
+      "name": "Evidence scope",
+      "definition": "Where the information needed for the answer comes from; requirements may combine.",
+      "allow_multiple": true,
+      "values": [
+        {
+          "id": "supplied",
+          "name": "Supplied evidence",
+          "definition": "Relevant material is already present in the request.",
+          "examples": [
+            "Answer using the attached policy text."
+          ]
+        },
+        {
+          "id": "retrieval",
+          "name": "Retrieval required",
+          "definition": "Required information must be fetched from a source or tool.",
+          "examples": [
+            "Look up the current order state."
+          ]
+        },
+        {
+          "id": "domain_knowledge",
+          "name": "Domain knowledge required",
+          "definition": "The request expects knowledge beyond the supplied material.",
+          "examples": [
+            "Explain a technical concept without reference text."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "context_relationship",
+      "name": "Relationship between context items",
+      "definition": "How supplied items must be considered, independently of their length.",
+      "allow_multiple": true,
+      "values": [
+        {
+          "id": "single_item",
+          "name": "Single item",
+          "definition": "One primary item provides the evidence.",
+          "examples": [
+            "Extract fields from one receipt."
+          ]
+        },
+        {
+          "id": "independent_items",
+          "name": "Independent items",
+          "definition": "Several items can be handled separately.",
+          "examples": [
+            "Classify a list of unrelated tickets."
+          ]
+        },
+        {
+          "id": "cross_item",
+          "name": "Cross-item reasoning",
+          "definition": "The answer requires relating several items.",
+          "examples": [
+            "Reconcile two statements."
+          ]
+        },
+        {
+          "id": "stateful_history",
+          "name": "Stateful history",
+          "definition": "Interpretation depends on prior events or state changes.",
+          "examples": [
+            "Choose the next step after an unsuccessful tool action."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tool_requirement",
+      "name": "Tool requirement",
+      "definition": "Required interaction with tools at this decision point, not whether previous calls used tools.",
+      "allow_multiple": true,
+      "values": [
+        {
+          "id": "none",
+          "name": "No tool required",
+          "definition": "The request can be fulfilled without a tool.",
+          "examples": [
+            "Summarize supplied text."
+          ]
+        },
+        {
+          "id": "read",
+          "name": "Read external state",
+          "definition": "Retrieve information without changing external business state.",
+          "examples": [
+            "Look up a shipment."
+          ]
+        },
+        {
+          "id": "compute",
+          "name": "Execute computation",
+          "definition": "Run code or a calculation in a controlled environment.",
+          "examples": [
+            "Run tests on a candidate patch."
+          ]
+        },
+        {
+          "id": "write",
+          "name": "Change external state",
+          "definition": "Modify a record, send an action, or otherwise change external state.",
+          "examples": [
+            "Update an order address."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "output_constraint",
+      "name": "Output constraint",
+      "definition": "Constraints on the requested answer or action.",
+      "allow_multiple": true,
+      "values": [
+        {
+          "id": "free_text",
+          "name": "Free text",
+          "definition": "No machine schema is specified.",
+          "examples": [
+            "Explain an error in prose."
+          ]
+        },
+        {
+          "id": "fixed_choices",
+          "name": "Fixed choices",
+          "definition": "Output must select defined choices.",
+          "examples": [
+            "Choose one of four document types."
+          ]
+        },
+        {
+          "id": "schema",
+          "name": "Structured schema",
+          "definition": "Output must satisfy a specified machine-readable schema.",
+          "examples": [
+            "Return JSON matching the supplied fields."
+          ]
+        },
+        {
+          "id": "citations",
+          "name": "Evidence references",
+          "definition": "Claims must cite source passages or records.",
+          "examples": [
+            "Explain the result with document references."
+          ]
+        },
+        {
+          "id": "executable",
+          "name": "Executable artifact",
+          "definition": "The output must run or apply in a target environment.",
+          "examples": [
+            "Produce a tested code patch."
+          ]
+        }
+      ]
+    }
+  ]
+}

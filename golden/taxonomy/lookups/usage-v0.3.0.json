@@ -1,0 +1,1642 @@
+{
+  "version": "0.3.0",
+  "unit": "task_instance",
+  "dimensions": [
+    {
+      "id": "role",
+      "allow_multiple": true
+    },
+    {
+      "id": "use_case",
+      "allow_multiple": true
+    },
+    {
+      "id": "workflow",
+      "allow_multiple": true
+    },
+    {
+      "id": "task",
+      "allow_multiple": false
+    }
+  ],
+  "categories": [
+    {
+      "id": "shared.use_case.engineering",
+      "dimension": "use_case",
+      "industry": "all",
+      "name": "Software engineering",
+      "definition": "Build and maintain software used by any organization.",
+      "examples": [
+        "Implement a software change"
+      ]
+    },
+    {
+      "id": "shared.workflow.change",
+      "dimension": "workflow",
+      "industry": "all",
+      "name": "Implement a software change",
+      "definition": "Deliver a requested behavior change.",
+      "examples": [
+        "Fix a CSV parser that crashes on empty rows."
+      ]
+    },
+    {
+      "id": "shared.task.debug",
+      "dimension": "task",
+      "industry": "all",
+      "name": "Diagnose and fix a software defect",
+      "definition": "Find and correct the cause of unexpected software behavior.",
+      "examples": [
+        "Fix a CSV parser that crashes on empty rows."
+      ],
+      "excludes": [
+        "Implementing a new requested feature without a defect."
+      ]
+    },
+    {
+      "id": "shared.task.implement",
+      "dimension": "task",
+      "industry": "all",
+      "name": "Implement software behavior",
+      "definition": "Add or modify behavior according to a specification.",
+      "examples": [
+        "Add bulk upload support to an internal tool."
+      ],
+      "excludes": [
+        "Explaining existing code without changing it."
+      ]
+    },
+    {
+      "id": "shared.use_case.finance",
+      "dimension": "use_case",
+      "industry": "all",
+      "name": "Finance operations",
+      "definition": "Maintain financial records and explain business financial performance.",
+      "examples": [
+        "Review accounting records"
+      ]
+    },
+    {
+      "id": "shared.workflow.accounting",
+      "dimension": "workflow",
+      "industry": "all",
+      "name": "Review accounting records",
+      "definition": "Check and reconcile recorded financial activity.",
+      "examples": [
+        "Match invoice totals to payment records."
+      ]
+    },
+    {
+      "id": "shared.task.reconcile",
+      "dimension": "task",
+      "industry": "all",
+      "name": "Reconcile financial records",
+      "definition": "Find and explain differences between records representing the same activity.",
+      "examples": [
+        "Match invoice totals to payment records."
+      ],
+      "excludes": [
+        "Approving a lending application."
+      ]
+    },
+    {
+      "id": "shared.task.variance",
+      "dimension": "task",
+      "industry": "all",
+      "name": "Explain a financial variance",
+      "definition": "Explain a change against a stated financial baseline using supplied evidence.",
+      "examples": [
+        "Explain why department expenses exceed budget."
+      ],
+      "excludes": [
+        "Forecasting without a comparison baseline."
+      ]
+    },
+    {
+      "id": "shared.use_case.people",
+      "dimension": "use_case",
+      "industry": "all",
+      "name": "People operations",
+      "definition": "Support employees and employment administration.",
+      "examples": [
+        "Resolve employee questions"
+      ]
+    },
+    {
+      "id": "shared.workflow.employee_support",
+      "dimension": "workflow",
+      "industry": "all",
+      "name": "Resolve employee questions",
+      "definition": "Answer employment-process and policy questions.",
+      "examples": [
+        "Explain the documented parental-leave process."
+      ]
+    },
+    {
+      "id": "shared.task.policy_answer",
+      "dimension": "task",
+      "industry": "all",
+      "name": "Answer an employee policy question",
+      "definition": "Find and explain an applicable employment policy.",
+      "examples": [
+        "Explain the documented parental-leave process."
+      ],
+      "excludes": [
+        "Making an unsupported eligibility decision without the policy."
+      ]
+    },
+    {
+      "id": "shared.task.onboarding",
+      "dimension": "task",
+      "industry": "all",
+      "name": "Prepare employee onboarding steps",
+      "definition": "Build or update a checklist for a specified new employee.",
+      "examples": [
+        "List required account and equipment requests for a new hire."
+      ],
+      "excludes": [
+        "General recruitment marketing."
+      ]
+    },
+    {
+      "id": "shared.use_case.sales",
+      "dimension": "use_case",
+      "industry": "all",
+      "name": "Sales operations",
+      "definition": "Support prospect evaluation and preparation of sales material.",
+      "examples": [
+        "Prepare an opportunity"
+      ]
+    },
+    {
+      "id": "shared.workflow.opportunity",
+      "dimension": "workflow",
+      "industry": "all",
+      "name": "Prepare an opportunity",
+      "definition": "Gather evidence and prepare a sales response.",
+      "examples": [
+        "Summarize a prospect from supplied company materials."
+      ]
+    },
+    {
+      "id": "shared.task.research_account",
+      "dimension": "task",
+      "industry": "all",
+      "name": "Research a prospective account",
+      "definition": "Summarize relevant facts about an organization for a sales opportunity.",
+      "examples": [
+        "Summarize a prospect from supplied company materials."
+      ],
+      "excludes": [
+        "Assessing a loan applicant for credit approval."
+      ]
+    },
+    {
+      "id": "shared.task.draft_proposal",
+      "dimension": "task",
+      "industry": "all",
+      "name": "Draft a sales proposal",
+      "definition": "Prepare a proposed offering against a prospect requirement.",
+      "examples": [
+        "Draft a services proposal from the scope and approved rates."
+      ],
+      "excludes": [
+        "Signing or accepting the commercial agreement."
+      ]
+    },
+    {
+      "id": "shared.use_case.service",
+      "dimension": "use_case",
+      "industry": "all",
+      "name": "Customer service",
+      "definition": "Resolve customer questions and service issues across industries.",
+      "examples": [
+        "Resolve a support case"
+      ]
+    },
+    {
+      "id": "shared.workflow.case_resolution",
+      "dimension": "workflow",
+      "industry": "all",
+      "name": "Resolve a support case",
+      "definition": "Investigate and respond to a reported customer issue.",
+      "examples": [
+        "Explain how to reset account notification settings."
+      ]
+    },
+    {
+      "id": "shared.task.answer_support",
+      "dimension": "task",
+      "industry": "all",
+      "name": "Answer a product or service question",
+      "definition": "Explain a product or service using supported information.",
+      "examples": [
+        "Explain how to reset account notification settings."
+      ],
+      "excludes": [
+        "Executing an account change."
+      ]
+    },
+    {
+      "id": "shared.task.triage_case",
+      "dimension": "task",
+      "industry": "all",
+      "name": "Triage a support case",
+      "definition": "Determine the issue type and appropriate next owner or action.",
+      "examples": [
+        "Route an inaccessible-account report to the identity team."
+      ],
+      "excludes": [
+        "Completing the repair itself."
+      ]
+    },
+    {
+      "id": "shared.use_case.procurement",
+      "dimension": "use_case",
+      "industry": "all",
+      "name": "Procurement",
+      "definition": "Support purchasing and supplier management.",
+      "examples": [
+        "Review supplier options"
+      ]
+    },
+    {
+      "id": "shared.workflow.supplier_review",
+      "dimension": "workflow",
+      "industry": "all",
+      "name": "Review supplier options",
+      "definition": "Compare suppliers against stated purchasing criteria.",
+      "examples": [
+        "Compare three equipment quotes including delivery and warranty."
+      ]
+    },
+    {
+      "id": "shared.task.compare_quotes",
+      "dimension": "task",
+      "industry": "all",
+      "name": "Compare supplier quotes",
+      "definition": "Compare quoted terms and quantities against requirements.",
+      "examples": [
+        "Compare three equipment quotes including delivery and warranty."
+      ],
+      "excludes": [
+        "Issuing a binding purchase order."
+      ]
+    },
+    {
+      "id": "shared.task.purchase_draft",
+      "dimension": "task",
+      "industry": "all",
+      "name": "Prepare a purchase request",
+      "definition": "Create a proposed purchase record from an approved need.",
+      "examples": [
+        "Draft a purchase request for laptops from an approved quote."
+      ],
+      "excludes": [
+        "Automatically approving a purchase."
+      ]
+    },
+    {
+      "id": "shared.role.engineer",
+      "dimension": "role",
+      "industry": "all",
+      "name": "Software engineer",
+      "definition": "An actor identified as an engineer by supplied metadata.",
+      "examples": [
+        "Actor metadata names the engineering team."
+      ]
+    },
+    {
+      "id": "shared.role.support",
+      "dimension": "role",
+      "industry": "all",
+      "name": "Support agent",
+      "definition": "An actor identified as a customer-support worker.",
+      "examples": [
+        "Actor metadata names the support queue owner."
+      ]
+    },
+    {
+      "id": "shared.role.analyst",
+      "dimension": "role",
+      "industry": "all",
+      "name": "Business analyst",
+      "definition": "An actor identified as an analyst by supplied metadata.",
+      "examples": [
+        "Actor metadata identifies a finance analyst."
+      ]
+    },
+    {
+      "id": "banking_and_lending.use_case.lending",
+      "dimension": "use_case",
+      "industry": "banking_and_lending",
+      "name": "Lending operations",
+      "definition": "Process and service lending applications and agreements.",
+      "examples": [
+        "Review a loan application"
+      ]
+    },
+    {
+      "id": "banking_and_lending.workflow.application",
+      "dimension": "workflow",
+      "industry": "banking_and_lending",
+      "name": "Review a loan application",
+      "definition": "Prepare application evidence and apply supplied lending criteria.",
+      "examples": [
+        "Compare declared income with supplied income documents."
+      ]
+    },
+    {
+      "id": "banking_and_lending.task.application_evidence",
+      "dimension": "task",
+      "industry": "banking_and_lending",
+      "name": "Prepare application evidence",
+      "definition": "Extract and reconcile information needed to review a loan application.",
+      "examples": [
+        "Compare declared income with supplied income documents."
+      ],
+      "excludes": [
+        "The final credit decision."
+      ]
+    },
+    {
+      "id": "banking_and_lending.task.eligibility",
+      "dimension": "task",
+      "industry": "banking_and_lending",
+      "name": "Check application eligibility",
+      "definition": "Apply specified eligibility rules to the available application evidence.",
+      "examples": [
+        "Check whether the application meets the supplied income rule."
+      ],
+      "excludes": [
+        "Inventing lending policy or merely extracting fields."
+      ]
+    },
+    {
+      "id": "banking_and_lending.workflow.servicing",
+      "dimension": "workflow",
+      "industry": "banking_and_lending",
+      "name": "Service an existing loan",
+      "definition": "Handle changes and questions after a loan is established.",
+      "examples": [
+        "Explain the next payment from the provided schedule."
+      ]
+    },
+    {
+      "id": "banking_and_lending.task.repayment_explanation",
+      "dimension": "task",
+      "industry": "banking_and_lending",
+      "name": "Explain repayment details",
+      "definition": "Explain amounts and dates from a loan schedule.",
+      "examples": [
+        "Explain the next payment from the provided schedule."
+      ],
+      "excludes": [
+        "Changing a payment agreement."
+      ]
+    },
+    {
+      "id": "banking_and_lending.task.servicing_request",
+      "dimension": "task",
+      "industry": "banking_and_lending",
+      "name": "Prepare a servicing change",
+      "definition": "Check and prepare a requested loan-account change under supplied rules.",
+      "examples": [
+        "Prepare a repayment-date change for confirmation."
+      ],
+      "excludes": [
+        "Origination of a new loan."
+      ]
+    },
+    {
+      "id": "banking_and_lending.use_case.accounts",
+      "dimension": "use_case",
+      "industry": "banking_and_lending",
+      "name": "Account and payment operations",
+      "definition": "Support account opening and payment investigations.",
+      "examples": [
+        "Review account-opening evidence"
+      ]
+    },
+    {
+      "id": "banking_and_lending.workflow.onboarding",
+      "dimension": "workflow",
+      "industry": "banking_and_lending",
+      "name": "Review account-opening evidence",
+      "definition": "Check submitted evidence for account onboarding.",
+      "examples": [
+        "Compare an application against the required-document checklist."
+      ]
+    },
+    {
+      "id": "banking_and_lending.task.evidence_completeness",
+      "dimension": "task",
+      "industry": "banking_and_lending",
+      "name": "Check onboarding evidence",
+      "definition": "Identify missing or inconsistent required account-opening information.",
+      "examples": [
+        "Compare an application against the required-document checklist."
+      ],
+      "excludes": [
+        "Declaring legal compliance without a supplied rule set."
+      ]
+    },
+    {
+      "id": "banking_and_lending.task.onboarding_followup",
+      "dimension": "task",
+      "industry": "banking_and_lending",
+      "name": "Prepare an onboarding follow-up",
+      "definition": "Request specific missing information supported by the review.",
+      "examples": [
+        "Draft a request for an absent proof of address."
+      ],
+      "excludes": [
+        "Marketing a new account product."
+      ]
+    },
+    {
+      "id": "banking_and_lending.workflow.payment_review",
+      "dimension": "workflow",
+      "industry": "banking_and_lending",
+      "name": "Investigate a payment",
+      "definition": "Trace payment status and explain discrepancies.",
+      "examples": [
+        "Find why a transfer remains pending from supplied event logs."
+      ]
+    },
+    {
+      "id": "banking_and_lending.task.payment_status",
+      "dimension": "task",
+      "industry": "banking_and_lending",
+      "name": "Trace payment status",
+      "definition": "Locate the current state and relevant events of a payment.",
+      "examples": [
+        "Find why a transfer remains pending from supplied event logs."
+      ],
+      "excludes": [
+        "Moving funds."
+      ]
+    },
+    {
+      "id": "banking_and_lending.task.payment_exception",
+      "dimension": "task",
+      "industry": "banking_and_lending",
+      "name": "Explain a payment exception",
+      "definition": "Explain a failed or unmatched payment using transaction evidence.",
+      "examples": [
+        "Explain a beneficiary-name mismatch using the provided records."
+      ],
+      "excludes": [
+        "Approving a new payment."
+      ]
+    },
+    {
+      "id": "healthcare.use_case.care_records",
+      "dimension": "use_case",
+      "industry": "healthcare",
+      "name": "Care documentation",
+      "definition": "Prepare and retrieve information used in care delivery.",
+      "examples": [
+        "Prepare encounter documentation"
+      ]
+    },
+    {
+      "id": "healthcare.workflow.encounter_notes",
+      "dimension": "workflow",
+      "industry": "healthcare",
+      "name": "Prepare encounter documentation",
+      "definition": "Organize supplied encounter information into a record.",
+      "examples": [
+        "Draft an encounter summary from a transcript."
+      ]
+    },
+    {
+      "id": "healthcare.task.encounter_summary",
+      "dimension": "task",
+      "industry": "healthcare",
+      "name": "Summarize an encounter",
+      "definition": "Summarize the supplied encounter without adding clinical facts.",
+      "examples": [
+        "Draft an encounter summary from a transcript."
+      ],
+      "excludes": [
+        "Inventing diagnoses or observations."
+      ]
+    },
+    {
+      "id": "healthcare.task.record_fields",
+      "dimension": "task",
+      "industry": "healthcare",
+      "name": "Extract clinical record fields",
+      "definition": "Extract explicitly recorded findings, medications, or events.",
+      "examples": [
+        "Extract medication names and doses from a supplied note."
+      ],
+      "excludes": [
+        "Recommending a new medication."
+      ]
+    },
+    {
+      "id": "healthcare.workflow.care_information",
+      "dimension": "workflow",
+      "industry": "healthcare",
+      "name": "Retrieve care information",
+      "definition": "Find information relevant to a specified care question.",
+      "examples": [
+        "Summarize relevant previous visits for review."
+      ]
+    },
+    {
+      "id": "healthcare.task.record_timeline",
+      "dimension": "task",
+      "industry": "healthcare",
+      "name": "Build a patient-record timeline",
+      "definition": "Order documented events and identify gaps in the supplied record.",
+      "examples": [
+        "Summarize relevant previous visits for review."
+      ],
+      "excludes": [
+        "Inferring unrecorded events."
+      ]
+    },
+    {
+      "id": "healthcare.task.guideline_lookup",
+      "dimension": "task",
+      "industry": "healthcare",
+      "name": "Retrieve guideline evidence",
+      "definition": "Find and summarize relevant passages from specified clinical references.",
+      "examples": [
+        "Locate a passage addressing the clinician question."
+      ],
+      "excludes": [
+        "An unsupported patient-specific treatment decision."
+      ]
+    },
+    {
+      "id": "healthcare.use_case.administration",
+      "dimension": "use_case",
+      "industry": "healthcare",
+      "name": "Healthcare administration",
+      "definition": "Coordinate administrative access, scheduling, and billing.",
+      "examples": [
+        "Coordinate access to care"
+      ]
+    },
+    {
+      "id": "healthcare.workflow.access",
+      "dimension": "workflow",
+      "industry": "healthcare",
+      "name": "Coordinate access to care",
+      "definition": "Handle scheduling and referral administration.",
+      "examples": [
+        "Find available appointments for a referral."
+      ]
+    },
+    {
+      "id": "healthcare.task.appointment",
+      "dimension": "task",
+      "industry": "healthcare",
+      "name": "Arrange an appointment",
+      "definition": "Find or prepare an appointment using stated constraints.",
+      "examples": [
+        "Find available appointments for a referral."
+      ],
+      "excludes": [
+        "Clinical triage without a separate rubric."
+      ]
+    },
+    {
+      "id": "healthcare.task.referral",
+      "dimension": "task",
+      "industry": "healthcare",
+      "name": "Prepare a referral packet",
+      "definition": "Collect required information for a referral.",
+      "examples": [
+        "Identify missing documents in a referral packet."
+      ],
+      "excludes": [
+        "Diagnosing the patient."
+      ]
+    },
+    {
+      "id": "healthcare.workflow.billing",
+      "dimension": "workflow",
+      "industry": "healthcare",
+      "name": "Review billing documentation",
+      "definition": "Check evidence required for billing or authorization.",
+      "examples": [
+        "Match supplied records to a payer checklist."
+      ]
+    },
+    {
+      "id": "healthcare.task.authorization_packet",
+      "dimension": "task",
+      "industry": "healthcare",
+      "name": "Prepare authorization evidence",
+      "definition": "Assemble requested evidence for an authorization submission.",
+      "examples": [
+        "Match supplied records to a payer checklist."
+      ],
+      "excludes": [
+        "Guaranteeing authorization approval."
+      ]
+    },
+    {
+      "id": "healthcare.task.billing_discrepancy",
+      "dimension": "task",
+      "industry": "healthcare",
+      "name": "Review a billing discrepancy",
+      "definition": "Compare billed entries with supplied supporting records.",
+      "examples": [
+        "Flag a charge lacking supporting documentation."
+      ],
+      "excludes": [
+        "Assigning unverified billing codes."
+      ]
+    },
+    {
+      "id": "insurance.use_case.policy",
+      "dimension": "use_case",
+      "industry": "insurance",
+      "name": "Policy operations",
+      "definition": "Prepare, explain, and maintain insurance policies.",
+      "examples": [
+        "Review an insurance submission"
+      ]
+    },
+    {
+      "id": "insurance.workflow.underwriting",
+      "dimension": "workflow",
+      "industry": "insurance",
+      "name": "Review an insurance submission",
+      "definition": "Assemble evidence and apply supplied underwriting criteria.",
+      "examples": [
+        "Compare a property submission with its required evidence list."
+      ]
+    },
+    {
+      "id": "insurance.task.submission_review",
+      "dimension": "task",
+      "industry": "insurance",
+      "name": "Review submission evidence",
+      "definition": "Find missing or inconsistent information in an insurance submission.",
+      "examples": [
+        "Compare a property submission with its required evidence list."
+      ],
+      "excludes": [
+        "Claim settlement."
+      ]
+    },
+    {
+      "id": "insurance.task.underwriting_check",
+      "dimension": "task",
+      "industry": "insurance",
+      "name": "Check underwriting criteria",
+      "definition": "Apply provided underwriting rules to submission facts.",
+      "examples": [
+        "Check property attributes against supplied acceptance criteria."
+      ],
+      "excludes": [
+        "Setting new underwriting policy."
+      ]
+    },
+    {
+      "id": "insurance.workflow.policy_service",
+      "dimension": "workflow",
+      "industry": "insurance",
+      "name": "Service a policy",
+      "definition": "Explain terms and prepare policy changes.",
+      "examples": [
+        "Explain a deductible using the policy wording."
+      ]
+    },
+    {
+      "id": "insurance.task.coverage_explanation",
+      "dimension": "task",
+      "industry": "insurance",
+      "name": "Explain policy coverage",
+      "definition": "Explain cited provisions of a supplied policy for a stated question.",
+      "examples": [
+        "Explain a deductible using the policy wording."
+      ],
+      "excludes": [
+        "A final claim payment determination."
+      ]
+    },
+    {
+      "id": "insurance.task.policy_change",
+      "dimension": "task",
+      "industry": "insurance",
+      "name": "Prepare a policy change",
+      "definition": "Translate a requested change into proposed policy updates.",
+      "examples": [
+        "Prepare an address endorsement for confirmation."
+      ],
+      "excludes": [
+        "Issuing a policy change without required authorization."
+      ]
+    },
+    {
+      "id": "insurance.use_case.claims",
+      "dimension": "use_case",
+      "industry": "insurance",
+      "name": "Claims operations",
+      "definition": "Receive, review, and progress claims.",
+      "examples": [
+        "Register a claim"
+      ]
+    },
+    {
+      "id": "insurance.workflow.intake",
+      "dimension": "workflow",
+      "industry": "insurance",
+      "name": "Register a claim",
+      "definition": "Collect the facts needed to open a claim.",
+      "examples": [
+        "Extract incident date and affected property from a loss report."
+      ]
+    },
+    {
+      "id": "insurance.task.loss_details",
+      "dimension": "task",
+      "industry": "insurance",
+      "name": "Extract loss details",
+      "definition": "Extract incident facts into the claim intake structure.",
+      "examples": [
+        "Extract incident date and affected property from a loss report."
+      ],
+      "excludes": [
+        "Deciding whether the loss is covered."
+      ]
+    },
+    {
+      "id": "insurance.task.claim_routing",
+      "dimension": "task",
+      "industry": "insurance",
+      "name": "Route a claim",
+      "definition": "Select the handling path using supplied claim-routing rules.",
+      "examples": [
+        "Route a claim by incident type and supporting evidence."
+      ],
+      "excludes": [
+        "Investigating the claim to conclusion."
+      ]
+    },
+    {
+      "id": "insurance.workflow.review",
+      "dimension": "workflow",
+      "industry": "insurance",
+      "name": "Review claim evidence",
+      "definition": "Compare claim documents and supplied policy requirements.",
+      "examples": [
+        "Compare repair invoices with an assessor report."
+      ]
+    },
+    {
+      "id": "insurance.task.claim_evidence",
+      "dimension": "task",
+      "industry": "insurance",
+      "name": "Compare claim evidence",
+      "definition": "Identify agreements and discrepancies across claim documents.",
+      "examples": [
+        "Compare repair invoices with an assessor report."
+      ],
+      "excludes": [
+        "Assuming discrepancies prove fraud."
+      ]
+    },
+    {
+      "id": "insurance.task.claim_recommendation",
+      "dimension": "task",
+      "industry": "insurance",
+      "name": "Prepare a claim recommendation",
+      "definition": "Prepare a supported recommendation for the required decision process.",
+      "examples": [
+        "Draft an evidence-linked recommendation using the supplied policy."
+      ],
+      "excludes": [
+        "Executing payment or treating the recommendation as approval."
+      ]
+    },
+    {
+      "id": "logistics_and_transport.use_case.transport",
+      "dimension": "use_case",
+      "industry": "logistics_and_transport",
+      "name": "Transport operations",
+      "definition": "Plan and monitor the movement of shipments.",
+      "examples": [
+        "Prepare a shipment plan"
+      ]
+    },
+    {
+      "id": "logistics_and_transport.workflow.planning",
+      "dimension": "workflow",
+      "industry": "logistics_and_transport",
+      "name": "Prepare a shipment plan",
+      "definition": "Select proposed routes and arrangements under constraints.",
+      "examples": [
+        "Propose a route meeting a delivery window and capacity limit."
+      ]
+    },
+    {
+      "id": "logistics_and_transport.task.route_plan",
+      "dimension": "task",
+      "industry": "logistics_and_transport",
+      "name": "Propose a shipment route",
+      "definition": "Compare route options against stated delivery constraints.",
+      "examples": [
+        "Propose a route meeting a delivery window and capacity limit."
+      ],
+      "excludes": [
+        "Assuming live road conditions without data."
+      ]
+    },
+    {
+      "id": "logistics_and_transport.task.carrier_compare",
+      "dimension": "task",
+      "industry": "logistics_and_transport",
+      "name": "Compare carrier options",
+      "definition": "Compare carrier offers against shipment requirements.",
+      "examples": [
+        "Compare quoted cost and service commitments."
+      ],
+      "excludes": [
+        "Booking without required approval."
+      ]
+    },
+    {
+      "id": "logistics_and_transport.workflow.tracking",
+      "dimension": "workflow",
+      "industry": "logistics_and_transport",
+      "name": "Investigate a shipment",
+      "definition": "Explain shipment progress and exceptions.",
+      "examples": [
+        "Explain the last confirmed location and missing scan."
+      ]
+    },
+    {
+      "id": "logistics_and_transport.task.shipment_status",
+      "dimension": "task",
+      "industry": "logistics_and_transport",
+      "name": "Explain shipment status",
+      "definition": "Summarize supplied tracking events for a shipment.",
+      "examples": [
+        "Explain the last confirmed location and missing scan."
+      ],
+      "excludes": [
+        "Inventing an arrival time."
+      ]
+    },
+    {
+      "id": "logistics_and_transport.task.delay_investigation",
+      "dimension": "task",
+      "industry": "logistics_and_transport",
+      "name": "Investigate a delivery delay",
+      "definition": "Identify supported causes and next actions for a delay.",
+      "examples": [
+        "Compare planned milestones with actual tracking events."
+      ],
+      "excludes": [
+        "Treating an inferred cause as confirmed."
+      ]
+    },
+    {
+      "id": "logistics_and_transport.use_case.fulfillment",
+      "dimension": "use_case",
+      "industry": "logistics_and_transport",
+      "name": "Fulfillment operations",
+      "definition": "Coordinate warehouse handling and shipment documentation.",
+      "examples": [
+        "Review warehouse work"
+      ]
+    },
+    {
+      "id": "logistics_and_transport.workflow.warehouse",
+      "dimension": "workflow",
+      "industry": "logistics_and_transport",
+      "name": "Review warehouse work",
+      "definition": "Check inventory and prepare handling instructions.",
+      "examples": [
+        "Explain a mismatch between picked and recorded quantity."
+      ]
+    },
+    {
+      "id": "logistics_and_transport.task.inventory_exception",
+      "dimension": "task",
+      "industry": "logistics_and_transport",
+      "name": "Investigate an inventory discrepancy",
+      "definition": "Compare stock records and recorded warehouse movements.",
+      "examples": [
+        "Explain a mismatch between picked and recorded quantity."
+      ],
+      "excludes": [
+        "Changing inventory without authorization."
+      ]
+    },
+    {
+      "id": "logistics_and_transport.task.handling_plan",
+      "dimension": "task",
+      "industry": "logistics_and_transport",
+      "name": "Prepare handling instructions",
+      "definition": "Prepare steps satisfying supplied storage and handling requirements.",
+      "examples": [
+        "Draft pick-and-pack instructions for a fragile shipment."
+      ],
+      "excludes": [
+        "Ignoring supplied hazardous-material constraints."
+      ]
+    },
+    {
+      "id": "logistics_and_transport.workflow.documents",
+      "dimension": "workflow",
+      "industry": "logistics_and_transport",
+      "name": "Prepare shipment records",
+      "definition": "Extract and compare shipment-document information.",
+      "examples": [
+        "Extract shipment fields from a bill of lading."
+      ]
+    },
+    {
+      "id": "logistics_and_transport.task.shipping_fields",
+      "dimension": "task",
+      "industry": "logistics_and_transport",
+      "name": "Extract shipping-document fields",
+      "definition": "Extract identifiers, quantities, and destinations from shipment records.",
+      "examples": [
+        "Extract shipment fields from a bill of lading."
+      ],
+      "excludes": [
+        "Inferring missing fields as facts."
+      ]
+    },
+    {
+      "id": "logistics_and_transport.task.document_check",
+      "dimension": "task",
+      "industry": "logistics_and_transport",
+      "name": "Check shipment-document consistency",
+      "definition": "Find mismatches across shipment documentation.",
+      "examples": [
+        "Compare package counts across a manifest and invoice."
+      ],
+      "excludes": [
+        "Declaring regulatory clearance."
+      ]
+    },
+    {
+      "id": "manufacturing.use_case.production",
+      "dimension": "use_case",
+      "industry": "manufacturing",
+      "name": "Production operations",
+      "definition": "Plan and maintain manufacturing execution.",
+      "examples": [
+        "Prepare a production plan"
+      ]
+    },
+    {
+      "id": "manufacturing.workflow.planning",
+      "dimension": "workflow",
+      "industry": "manufacturing",
+      "name": "Prepare a production plan",
+      "definition": "Compare demand, materials, and available capacity.",
+      "examples": [
+        "Identify a machine-capacity bottleneck in a proposed schedule."
+      ]
+    },
+    {
+      "id": "manufacturing.task.capacity_check",
+      "dimension": "task",
+      "industry": "manufacturing",
+      "name": "Check production capacity",
+      "definition": "Compare requested production with available capacity and constraints.",
+      "examples": [
+        "Identify a machine-capacity bottleneck in a proposed schedule."
+      ],
+      "excludes": [
+        "Inventing capacity measurements."
+      ]
+    },
+    {
+      "id": "manufacturing.task.schedule_proposal",
+      "dimension": "task",
+      "industry": "manufacturing",
+      "name": "Propose a production schedule",
+      "definition": "Prepare a schedule satisfying stated production constraints.",
+      "examples": [
+        "Propose a batch schedule using supplied lead times."
+      ],
+      "excludes": [
+        "Issuing unreviewed machine commands."
+      ]
+    },
+    {
+      "id": "manufacturing.workflow.maintenance",
+      "dimension": "workflow",
+      "industry": "manufacturing",
+      "name": "Investigate equipment problems",
+      "definition": "Use observations and references to plan maintenance work.",
+      "examples": [
+        "Summarize likely causes supported by fault logs."
+      ]
+    },
+    {
+      "id": "manufacturing.task.fault_investigation",
+      "dimension": "task",
+      "industry": "manufacturing",
+      "name": "Investigate an equipment fault",
+      "definition": "Relate observed symptoms to supplied logs and maintenance references.",
+      "examples": [
+        "Summarize likely causes supported by fault logs."
+      ],
+      "excludes": [
+        "Declaring unsupported physical certainty."
+      ]
+    },
+    {
+      "id": "manufacturing.task.maintenance_plan",
+      "dimension": "task",
+      "industry": "manufacturing",
+      "name": "Prepare maintenance work",
+      "definition": "Prepare work steps from approved maintenance procedures.",
+      "examples": [
+        "Draft a maintenance checklist from the applicable manual."
+      ],
+      "excludes": [
+        "Autonomous equipment operation."
+      ]
+    },
+    {
+      "id": "manufacturing.use_case.quality_supply",
+      "dimension": "use_case",
+      "industry": "manufacturing",
+      "name": "Quality and supply operations",
+      "definition": "Check product quality and material availability.",
+      "examples": [
+        "Review quality evidence"
+      ]
+    },
+    {
+      "id": "manufacturing.workflow.inspection",
+      "dimension": "workflow",
+      "industry": "manufacturing",
+      "name": "Review quality evidence",
+      "definition": "Compare inspection evidence with product requirements.",
+      "examples": [
+        "Identify measurements outside the specified tolerance."
+      ]
+    },
+    {
+      "id": "manufacturing.task.inspection_check",
+      "dimension": "task",
+      "industry": "manufacturing",
+      "name": "Check inspection results",
+      "definition": "Compare recorded measurements with supplied tolerances.",
+      "examples": [
+        "Identify measurements outside the specified tolerance."
+      ],
+      "excludes": [
+        "Inventing measurements from missing data."
+      ]
+    },
+    {
+      "id": "manufacturing.task.nonconformance",
+      "dimension": "task",
+      "industry": "manufacturing",
+      "name": "Document a nonconformance",
+      "definition": "Describe a quality issue with supporting observations.",
+      "examples": [
+        "Draft a nonconformance report from inspection findings."
+      ],
+      "excludes": [
+        "Approving product release."
+      ]
+    },
+    {
+      "id": "manufacturing.workflow.materials",
+      "dimension": "workflow",
+      "industry": "manufacturing",
+      "name": "Review material supply",
+      "definition": "Check material requirements and supplier evidence.",
+      "examples": [
+        "Identify parts missing for a planned batch."
+      ]
+    },
+    {
+      "id": "manufacturing.task.shortage",
+      "dimension": "task",
+      "industry": "manufacturing",
+      "name": "Identify material shortages",
+      "definition": "Compare material requirements with available and incoming stock.",
+      "examples": [
+        "Identify parts missing for a planned batch."
+      ],
+      "excludes": [
+        "Changing purchase orders."
+      ]
+    },
+    {
+      "id": "manufacturing.task.supplier_quality",
+      "dimension": "task",
+      "industry": "manufacturing",
+      "name": "Review supplier quality evidence",
+      "definition": "Compare supplier evidence with stated acceptance requirements.",
+      "examples": [
+        "Check a material certificate against the purchase specification."
+      ],
+      "excludes": [
+        "Treating absent evidence as compliance."
+      ]
+    },
+    {
+      "id": "professional_services.use_case.engagement",
+      "dimension": "use_case",
+      "industry": "professional_services",
+      "name": "Client engagement delivery",
+      "definition": "Research and produce client-facing work.",
+      "examples": [
+        "Investigate a client question"
+      ]
+    },
+    {
+      "id": "professional_services.workflow.research",
+      "dimension": "workflow",
+      "industry": "professional_services",
+      "name": "Investigate a client question",
+      "definition": "Collect and compare evidence relevant to an engagement.",
+      "examples": [
+        "Summarize supplied market interviews with source references."
+      ]
+    },
+    {
+      "id": "professional_services.task.evidence_review",
+      "dimension": "task",
+      "industry": "professional_services",
+      "name": "Review engagement evidence",
+      "definition": "Extract findings and references relevant to a specified client question.",
+      "examples": [
+        "Summarize supplied market interviews with source references."
+      ],
+      "excludes": [
+        "Inventing interview statements."
+      ]
+    },
+    {
+      "id": "professional_services.task.option_analysis",
+      "dimension": "task",
+      "industry": "professional_services",
+      "name": "Compare client options",
+      "definition": "Compare proposed options against stated objectives and evidence.",
+      "examples": [
+        "Compare operating-model options using supplied criteria."
+      ],
+      "excludes": [
+        "Presenting assumptions as observed facts."
+      ]
+    },
+    {
+      "id": "professional_services.workflow.deliverable",
+      "dimension": "workflow",
+      "industry": "professional_services",
+      "name": "Prepare a client deliverable",
+      "definition": "Turn approved findings into a specified deliverable.",
+      "examples": [
+        "Draft a recommendation report using reviewed analysis."
+      ]
+    },
+    {
+      "id": "professional_services.task.deliverable_draft",
+      "dimension": "task",
+      "industry": "professional_services",
+      "name": "Draft a client deliverable",
+      "definition": "Produce a report or presentation from supported engagement findings.",
+      "examples": [
+        "Draft a recommendation report using reviewed analysis."
+      ],
+      "excludes": [
+        "Signing off a final client decision."
+      ]
+    },
+    {
+      "id": "professional_services.task.deliverable_review",
+      "dimension": "task",
+      "industry": "professional_services",
+      "name": "Review a client deliverable",
+      "definition": "Check consistency, evidence, and completeness against the brief.",
+      "examples": [
+        "Find unsupported claims and missing sections in a draft."
+      ],
+      "excludes": [
+        "Re-running the entire underlying research by default."
+      ]
+    },
+    {
+      "id": "professional_services.use_case.engagement_operations",
+      "dimension": "use_case",
+      "industry": "professional_services",
+      "name": "Engagement operations",
+      "definition": "Plan, contract, and administer client work.",
+      "examples": [
+        "Plan an engagement"
+      ]
+    },
+    {
+      "id": "professional_services.workflow.planning",
+      "dimension": "workflow",
+      "industry": "professional_services",
+      "name": "Plan an engagement",
+      "definition": "Translate a scope into work and resource needs.",
+      "examples": [
+        "Draft a work plan with supplied staffing constraints."
+      ]
+    },
+    {
+      "id": "professional_services.task.work_plan",
+      "dimension": "task",
+      "industry": "professional_services",
+      "name": "Prepare an engagement plan",
+      "definition": "Define activities, dependencies, and deliverables for an agreed scope.",
+      "examples": [
+        "Draft a work plan with supplied staffing constraints."
+      ],
+      "excludes": [
+        "Committing resources without approval."
+      ]
+    },
+    {
+      "id": "professional_services.task.status_report",
+      "dimension": "task",
+      "industry": "professional_services",
+      "name": "Prepare an engagement status report",
+      "definition": "Summarize progress and blockers from supplied updates.",
+      "examples": [
+        "Draft a status report showing delayed deliverables."
+      ],
+      "excludes": [
+        "Inventing progress not evidenced by updates."
+      ]
+    },
+    {
+      "id": "professional_services.workflow.commercial",
+      "dimension": "workflow",
+      "industry": "professional_services",
+      "name": "Review engagement terms",
+      "definition": "Extract and compare commercial terms for review.",
+      "examples": [
+        "Extract deliverables and payment milestones from a statement of work."
+      ]
+    },
+    {
+      "id": "professional_services.task.terms_extract",
+      "dimension": "task",
+      "industry": "professional_services",
+      "name": "Extract engagement terms",
+      "definition": "Identify obligations, dates, and fees in supplied documents.",
+      "examples": [
+        "Extract deliverables and payment milestones from a statement of work."
+      ],
+      "excludes": [
+        "Providing a binding legal interpretation."
+      ]
+    },
+    {
+      "id": "professional_services.task.scope_compare",
+      "dimension": "task",
+      "industry": "professional_services",
+      "name": "Compare scope and billing",
+      "definition": "Identify differences between agreed scope, recorded work, and charges.",
+      "examples": [
+        "Flag billed work outside the supplied scope for review."
+      ],
+      "excludes": [
+        "Determining liability without an appropriate review."
+      ]
+    },
+    {
+      "id": "retail_and_ecommerce.use_case.commerce",
+      "dimension": "use_case",
+      "industry": "retail_and_ecommerce",
+      "name": "Commerce operations",
+      "definition": "Maintain product information and support purchases.",
+      "examples": [
+        "Maintain a product catalog"
+      ]
+    },
+    {
+      "id": "retail_and_ecommerce.workflow.catalog",
+      "dimension": "workflow",
+      "industry": "retail_and_ecommerce",
+      "name": "Maintain a product catalog",
+      "definition": "Prepare and check product information.",
+      "examples": [
+        "Extract dimensions and material from a supplied specification."
+      ]
+    },
+    {
+      "id": "retail_and_ecommerce.task.product_attributes",
+      "dimension": "task",
+      "industry": "retail_and_ecommerce",
+      "name": "Extract product attributes",
+      "definition": "Extract product fields from supplier evidence.",
+      "examples": [
+        "Extract dimensions and material from a supplied specification."
+      ],
+      "excludes": [
+        "Inventing product claims."
+      ]
+    },
+    {
+      "id": "retail_and_ecommerce.task.product_copy",
+      "dimension": "task",
+      "industry": "retail_and_ecommerce",
+      "name": "Draft product content",
+      "definition": "Write product content using verified attributes and requirements.",
+      "examples": [
+        "Draft a listing from approved specifications."
+      ],
+      "excludes": [
+        "Changing stock or price."
+      ]
+    },
+    {
+      "id": "retail_and_ecommerce.workflow.discovery",
+      "dimension": "workflow",
+      "industry": "retail_and_ecommerce",
+      "name": "Help a customer choose products",
+      "definition": "Find and compare products against expressed requirements.",
+      "examples": [
+        "Find in-stock items within a stated size and budget."
+      ]
+    },
+    {
+      "id": "retail_and_ecommerce.task.product_search",
+      "dimension": "task",
+      "industry": "retail_and_ecommerce",
+      "name": "Find matching products",
+      "definition": "Retrieve catalog items satisfying customer constraints.",
+      "examples": [
+        "Find in-stock items within a stated size and budget."
+      ],
+      "excludes": [
+        "Making up availability."
+      ]
+    },
+    {
+      "id": "retail_and_ecommerce.task.product_comparison",
+      "dimension": "task",
+      "industry": "retail_and_ecommerce",
+      "name": "Compare product options",
+      "definition": "Explain differences using available catalog evidence.",
+      "examples": [
+        "Compare warranty and capacity for two products."
+      ],
+      "excludes": [
+        "Completing a purchase."
+      ]
+    },
+    {
+      "id": "retail_and_ecommerce.use_case.order_service",
+      "dimension": "use_case",
+      "industry": "retail_and_ecommerce",
+      "name": "Order service",
+      "definition": "Track, change, and resolve customer orders.",
+      "examples": [
+        "Handle an order request"
+      ]
+    },
+    {
+      "id": "retail_and_ecommerce.workflow.order_support",
+      "dimension": "workflow",
+      "industry": "retail_and_ecommerce",
+      "name": "Handle an order request",
+      "definition": "Explain status or prepare an allowed order change.",
+      "examples": [
+        "Explain a delayed delivery using tracking events."
+      ]
+    },
+    {
+      "id": "retail_and_ecommerce.task.order_status",
+      "dimension": "task",
+      "industry": "retail_and_ecommerce",
+      "name": "Explain order status",
+      "definition": "Retrieve and explain current order progress.",
+      "examples": [
+        "Explain a delayed delivery using tracking events."
+      ],
+      "excludes": [
+        "Changing the order."
+      ]
+    },
+    {
+      "id": "retail_and_ecommerce.task.order_change",
+      "dimension": "task",
+      "industry": "retail_and_ecommerce",
+      "name": "Handle an order modification",
+      "definition": "Check and execute or prepare an allowed order modification.",
+      "examples": [
+        "Change an address after the required confirmation."
+      ],
+      "excludes": [
+        "Bypassing dispatch or confirmation restrictions."
+      ]
+    },
+    {
+      "id": "retail_and_ecommerce.workflow.returns",
+      "dimension": "workflow",
+      "industry": "retail_and_ecommerce",
+      "name": "Handle a return",
+      "definition": "Check return rules and progress a return request.",
+      "examples": [
+        "Check the return window and item condition requirements."
+      ]
+    },
+    {
+      "id": "retail_and_ecommerce.task.return_check",
+      "dimension": "task",
+      "industry": "retail_and_ecommerce",
+      "name": "Check return eligibility",
+      "definition": "Apply the supplied return policy to order facts.",
+      "examples": [
+        "Check the return window and item condition requirements."
+      ],
+      "excludes": [
+        "Issuing a refund."
+      ]
+    },
+    {
+      "id": "retail_and_ecommerce.task.return_action",
+      "dimension": "task",
+      "industry": "retail_and_ecommerce",
+      "name": "Process an allowed return",
+      "definition": "Prepare or execute the authorized return step.",
+      "examples": [
+        "Create a return request after required checks."
+      ],
+      "excludes": [
+        "Assuming a completed refund when only a request was created."
+      ]
+    },
+    {
+      "id": "software_and_it.use_case.delivery",
+      "dimension": "use_case",
+      "industry": "software_and_it",
+      "name": "Software delivery",
+      "definition": "Review, test, and release software changes.",
+      "examples": [
+        "Review a software change"
+      ]
+    },
+    {
+      "id": "software_and_it.workflow.quality",
+      "dimension": "workflow",
+      "industry": "software_and_it",
+      "name": "Review a software change",
+      "definition": "Assess a change and its verification coverage.",
+      "examples": [
+        "Review a patch for incorrect error handling."
+      ]
+    },
+    {
+      "id": "software_and_it.task.code_review",
+      "dimension": "task",
+      "industry": "software_and_it",
+      "name": "Review a code change",
+      "definition": "Find actionable defects or requirement gaps in a supplied change.",
+      "examples": [
+        "Review a patch for incorrect error handling."
+      ],
+      "excludes": [
+        "Implementing the patch itself; use shared engineering categories."
+      ]
+    },
+    {
+      "id": "software_and_it.task.test_design",
+      "dimension": "task",
+      "industry": "software_and_it",
+      "name": "Design or implement software tests",
+      "definition": "Create tests for specified behavior and failure cases.",
+      "examples": [
+        "Add regression tests for a parser defect."
+      ],
+      "excludes": [
+        "Changing unrelated application behavior."
+      ]
+    },
+    {
+      "id": "software_and_it.workflow.release",
+      "dimension": "workflow",
+      "industry": "software_and_it",
+      "name": "Prepare a software release",
+      "definition": "Check and prepare deployment changes.",
+      "examples": [
+        "Identify missing checks before deploying a service."
+      ]
+    },
+    {
+      "id": "software_and_it.task.release_check",
+      "dimension": "task",
+      "industry": "software_and_it",
+      "name": "Check release readiness",
+      "definition": "Review supplied checks and dependencies for a release.",
+      "examples": [
+        "Identify missing checks before deploying a service."
+      ],
+      "excludes": [
+        "Assuming absent checks passed."
+      ]
+    },
+    {
+      "id": "software_and_it.task.deployment_change",
+      "dimension": "task",
+      "industry": "software_and_it",
+      "name": "Prepare deployment configuration",
+      "definition": "Create or adjust deployment settings for a stated target.",
+      "examples": [
+        "Prepare a service configuration change for the test environment."
+      ],
+      "excludes": [
+        "Claiming a deployment succeeded without execution evidence."
+      ]
+    },
+    {
+      "id": "software_and_it.use_case.operations",
+      "dimension": "use_case",
+      "industry": "software_and_it",
+      "name": "IT operations",
+      "definition": "Restore services and manage internal technical access.",
+      "examples": [
+        "Investigate a service incident"
+      ]
+    },
+    {
+      "id": "software_and_it.workflow.incident",
+      "dimension": "workflow",
+      "industry": "software_and_it",
+      "name": "Investigate a service incident",
+      "definition": "Use operational evidence to understand and resolve service disruption.",
+      "examples": [
+        "Correlate a failure spike with supplied deployment logs."
+      ]
+    },
+    {
+      "id": "software_and_it.task.incident_triage",
+      "dimension": "task",
+      "industry": "software_and_it",
+      "name": "Triage a service incident",
+      "definition": "Identify affected components and supported hypotheses from evidence.",
+      "examples": [
+        "Correlate a failure spike with supplied deployment logs."
+      ],
+      "excludes": [
+        "Inferring a confirmed root cause from correlation alone."
+      ]
+    },
+    {
+      "id": "software_and_it.task.incident_summary",
+      "dimension": "task",
+      "industry": "software_and_it",
+      "name": "Document an incident",
+      "definition": "Summarize incident timeline, impact, and supported findings.",
+      "examples": [
+        "Draft a post-incident timeline from logs and notes."
+      ],
+      "excludes": [
+        "Inventing unresolved root causes."
+      ]
+    },
+    {
+      "id": "software_and_it.workflow.access",
+      "dimension": "workflow",
+      "industry": "software_and_it",
+      "name": "Handle an IT access request",
+      "definition": "Check and prepare technical access changes.",
+      "examples": [
+        "Check whether the required owner approved access."
+      ]
+    },
+    {
+      "id": "software_and_it.task.access_check",
+      "dimension": "task",
+      "industry": "software_and_it",
+      "name": "Check access prerequisites",
+      "definition": "Compare an access request with supplied authorization rules.",
+      "examples": [
+        "Check whether the required owner approved access."
+      ],
+      "excludes": [
+        "Inferring approval from the actor role alone."
+      ]
+    },
+    {
+      "id": "software_and_it.task.access_action",
+      "dimension": "task",
+      "industry": "software_and_it",
+      "name": "Prepare an access change",
+      "definition": "Prepare or execute a permitted account or permission change.",
+      "examples": [
+        "Prepare a role assignment after authorization checks."
+      ],
+      "excludes": [
+        "Bypassing approval or granting unrelated permissions."
+      ]
+    }
+  ]
+}
