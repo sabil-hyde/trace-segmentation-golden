@@ -11,3 +11,6 @@ data/**/review.jsonl
 data/**/export/
 data/**/export-unreviewed/
 .backup/
+# per-item outputs, rebuilt by re-running a run; metrics.json + manifest.json are committed
+runs/*/predictions.jsonl
+runs/*/report.md
