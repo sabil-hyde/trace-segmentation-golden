@@ -1,0 +1,232 @@
+{
+ "run": "20261012T205547Z_seg_jev_last2",
+ "task": {
+  "task": "seg",
+  "context": "last2",
+  "threshold": 0.9,
+  "n_classes": 2,
+  "spec_sha": "aeb838d15096",
+  "labels": [
+   "true",
+   "false"
+  ],
+  "spec": {
+   "new_task": {
+    "type": "noul",
+    "instructions": "Does new_user_request begin a NEW task, or continue the task in progress at the end of conversation_so_far? A task is one goal the user is working toward: a feature, a bug fix, a review, an answer to a question, a document. Follow-ups, fixes, clarifications, variants and sub-steps toward that goal belong to it. A new task starts where the user turns to a different goal, even inside the same project or document: a different feature, bug, issue, review or release step, or an unrelated question. Returning to an earlier goal after another one also starts a new segment. Greetings, thanks and small talk belong to the task around them. When in doubt, do not split.",
+    "criteria": {
+     "true": "new_user_request turns to a different goal, so a new task begins here.",
+     "false": "new_user_request continues the task in progress."
+    }
+   }
+  }
+ },
+ "classifier": "jev",
+ "model": "typesafe/jev-1.13",
+ "dataset": {
+  "path": "/Users/sabil/hyde/trace-segmentation-golden/data/golden-v2/export-unreviewed/seg.jsonl",
+  "sha256": "0e135036f3de9f174969f1058587a0bcbb70829015752b6e4f44cf8977e655f5",
+  "split": "eval",
+  "sample": null,
+  "seed": 0,
+  "n": 7746,
+  "review_status": [
+   "unreviewed"
+  ]
+ },
+ "threshold": 0.9,
+ "threshold_fit": true,
+ "counts": {
+  "items": 7746,
+  "answered": 7746
+ },
+ "quality": {
+  "boundary": {
+   "precision": 0.8397,
+   "recall": 0.8492,
+   "f1": 0.8444
+  },
+  "false_splits": 114,
+  "missed_splits": 106,
+  "gold_boundaries": 703,
+  "gaps": 7746,
+  "base_rate": 0.0908,
+  "slices": {
+   "recall_by_switch": {
+    "cross_industry": {
+     "rate": 0.9764,
+     "n": 212
+    },
+    "same_industry_other_task": {
+     "rate": 0.9383,
+     "n": 243
+    },
+    "same_task_new_object": {
+     "rate": 0.6532,
+     "n": 248
+    }
+   },
+   "recall_by_transition_style": {
+    "blended": {
+     "rate": 0.7953,
+     "n": 254
+    },
+    "explicit": {
+     "rate": 0.9722,
+     "n": 108
+    },
+    "misleading_cue": {
+     "rate": 0.86,
+     "n": 100
+    },
+    "no_marker": {
+     "rate": 0.8465,
+     "n": 241
+    }
+   },
+   "recall_by_user_len": {
+    "100": {
+     "rate": 0.8311,
+     "n": 148
+    },
+    "200": {
+     "rate": 0.9252,
+     "n": 147
+    },
+    "400": {
+     "rate": 0.916,
+     "n": 131
+    },
+    "50": {
+     "rate": 0.6839,
+     "n": 155
+    },
+    "800": {
+     "rate": 0.918,
+     "n": 122
+    }
+   },
+   "false_split_rate_by_followup_kind": {
+    "ask_detail": {
+     "rate": 0.0174,
+     "n": 745
+    },
+    "clarify": {
+     "rate": 0.0145,
+     "n": 761
+    },
+    "confirm": {
+     "rate": 0.0064,
+     "n": 787
+    },
+    "correct": {
+     "rate": 0.0,
+     "n": 745
+    },
+    "decoy": {
+     "rate": 0.033,
+     "n": 1758
+    },
+    "paste_more": {
+     "rate": 0.0253,
+     "n": 750
+    },
+    "provide_info": {
+     "rate": 0.004,
+     "n": 748
+    },
+    "refine": {
+     "rate": 0.0067,
+     "n": 749
+    }
+   },
+   "false_split_rate_by_user_len": {
+    "100": {
+     "rate": 0.017,
+     "n": 1409
+    },
+    "200": {
+     "rate": 0.0136,
+     "n": 1402
+    },
+    "400": {
+     "rate": 0.0147,
+     "n": 1430
+    },
+    "50": {
+     "rate": 0.0135,
+     "n": 1411
+    },
+    "800": {
+     "rate": 0.0223,
+     "n": 1391
+    }
+   }
+  },
+  "threshold_sweep": [
+   {
+    "threshold": 0.1,
+    "f1": 0.2144
+   },
+   {
+    "threshold": 0.2,
+    "f1": 0.3649
+   },
+   {
+    "threshold": 0.3,
+    "f1": 0.4718
+   },
+   {
+    "threshold": 0.4,
+    "f1": 0.5457
+   },
+   {
+    "threshold": 0.5,
+    "f1": 0.6157
+   },
+   {
+    "threshold": 0.6,
+    "f1": 0.6887
+   },
+   {
+    "threshold": 0.7,
+    "f1": 0.7475
+   },
+   {
+    "threshold": 0.8,
+    "f1": 0.8077
+   },
+   {
+    "threshold": 0.9,
+    "f1": 0.8444
+   }
+  ]
+ },
+ "speed": {
+  "p50_latency_s": 0.4913,
+  "p95_latency_s": 0.6315,
+  "total_runtime_s": 244.363,
+  "throughput_per_s": 31.699,
+  "concurrency": 16
+ },
+ "cost": {
+  "total_usd": 0.395599,
+  "per_1k_usd": 0.0511,
+  "basis": [
+   "api_reported"
+  ],
+  "items_with_unknown_cost": 0,
+  "threshold_fit_usd": 0.078824
+ },
+ "reliability": {
+  "failures": 0,
+  "timeouts": 0,
+  "invalid_outputs": 0,
+  "error_examples": []
+ },
+ "input": {
+  "median_est_tokens": 1014,
+  "p95_est_tokens": 1855,
+  "trimmed_share": 0.0
+ }
+}

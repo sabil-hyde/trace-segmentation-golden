@@ -1,0 +1,69 @@
+{
+ "run": "20261012T204913Z_seg_similarity_full",
+ "started_utc": "20261012T204913Z",
+ "wall_seconds": 0.695,
+ "dataset": {
+  "path": "/Users/sabil/hyde/trace-segmentation-golden/data/golden-v2/export-unreviewed/seg.jsonl",
+  "sha256": "0e135036f3de9f174969f1058587a0bcbb70829015752b6e4f44cf8977e655f5",
+  "split": "eval",
+  "sample": null,
+  "seed": 0,
+  "n": 7746,
+  "review_status": [
+   "unreviewed"
+  ]
+ },
+ "task": {
+  "task": "seg",
+  "context": "full",
+  "threshold": 0.96,
+  "n_classes": 2,
+  "spec_sha": "aeb838d15096",
+  "labels": [
+   "true",
+   "false"
+  ],
+  "spec": {
+   "new_task": {
+    "type": "noul",
+    "instructions": "Does new_user_request begin a NEW task, or continue the task in progress at the end of conversation_so_far? A task is one goal the user is working toward: a feature, a bug fix, a review, an answer to a question, a document. Follow-ups, fixes, clarifications, variants and sub-steps toward that goal belong to it. A new task starts where the user turns to a different goal, even inside the same project or document: a different feature, bug, issue, review or release step, or an unrelated question. Returning to an earlier goal after another one also starts a new segment. Greetings, thanks and small talk belong to the task around them. When in doubt, do not split.",
+    "criteria": {
+     "true": "new_user_request turns to a different goal, so a new task begins here.",
+     "false": "new_user_request continues the task in progress."
+    }
+   }
+  }
+ },
+ "threshold_fit": {
+  "threshold": 0.96,
+  "tune_f1": 0.3985,
+  "fit_on": {
+   "path": "/Users/sabil/hyde/trace-segmentation-golden/data/golden-v2/export-unreviewed/seg.jsonl",
+   "sha256": "0e135036f3de9f174969f1058587a0bcbb70829015752b6e4f44cf8977e655f5",
+   "split": "tune",
+   "sample": 1500,
+   "seed": 0,
+   "n": 1500,
+   "review_status": [
+    "unreviewed"
+   ]
+  },
+  "fit_cost_usd": 0.0
+ },
+ "classifier": {
+  "classifier": "similarity",
+  "budget_tokens": null,
+  "rule": "p(new) = 1 - cosine(new user turn, previous two turns)",
+  "cost": "free"
+ },
+ "batch_size": 1,
+ "concurrency": 16,
+ "hardware": {
+  "platform": "macOS-26.6-arm64-arm-64bit",
+  "machine": "arm64",
+  "cpus": 10,
+  "python": "3.12.15",
+  "note": "API classifiers run remotely; local hardware only sends requests"
+ },
+ "command": "/Users/sabil/hyde/trace-segmentation-golden/playground/run.py --task seg --classifier similarity --fit-threshold"
+}
