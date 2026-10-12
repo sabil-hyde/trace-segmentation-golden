@@ -1,4 +1,5 @@
-"""Segmentation definition and reference-labeller prompt from trace_mining/blocks/segment.py (unchanged)."""
+"""Segmentation definition, the yes/no question asked of Jev, and the reference-labeller prompt, from
+trace_mining/blocks/segment.py (unchanged)."""
 
 from __future__ import annotations
 
@@ -15,6 +16,13 @@ DEFINITION = (
     "feature, bug, issue, review or release step, or an unrelated question. Returning to an earlier goal after "
     "another one also starts a new segment. Greetings, thanks and small talk belong to the task around them. When "
     "in doubt, do not split.")
+QUESTION = {"new_task": {
+    "type": "noul",
+    "instructions": ("Does new_user_request begin a NEW task, or continue the task in progress at the end of "
+                     "conversation_so_far? " + DEFINITION),
+    "criteria": {"true": "new_user_request turns to a different goal, so a new task begins here.",
+                 "false": "new_user_request continues the task in progress."},
+}}
 LABEL_SYSTEM = f"""You label where one task ends and the next begins in a session between a user and an AI \
 assistant. Your labels are the gold standard that segmentation methods will be scored against, so be careful \
 and consistent.

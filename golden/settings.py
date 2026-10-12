@@ -22,9 +22,13 @@ def _load_dotenv() -> None:
                 os.environ.setdefault(key.strip(), value.strip().strip("'\""))
 
 
-def client() -> LLMClient:
+def api_key() -> str:
     _load_dotenv()
     key = os.environ.get(API_KEY_ENV)
     if not key:
         raise SystemExit(f"{API_KEY_ENV} is not set: put it in the environment or in {REPO_DIR / '.env'}")
-    return LLMClient(BASE_URL, key, timeout_s=TIMEOUT_S)
+    return key
+
+
+def client() -> LLMClient:
+    return LLMClient(BASE_URL, api_key(), timeout_s=TIMEOUT_S)
