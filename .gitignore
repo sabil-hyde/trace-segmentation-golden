@@ -10,3 +10,4 @@ data/**/review.jsonl
 # rebuilt with: python -m golden.export [--unreviewed] (deterministic; seg.jsonl is ~170 MB)
 data/**/export/
 data/**/export-unreviewed/
+.backup/
