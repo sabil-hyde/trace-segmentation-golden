@@ -46,7 +46,7 @@ SYSTEM = ("You write realistic, fully fictional chat transcripts between a user 
 
 # What a task's request must contain. The starter-pack definitions alone let the generator drift for these tasks
 # (golden-v2 review: a catalog search became a one-item eligibility check, an option comparison a one-vendor check,
-# a code review a change-ticket gate); see docs/TAXONOMY_REVIEW.md.
+# a code review a change-ticket gate).
 TASK_HINTS = {
     "retail_and_ecommerce.task.product_search": "The user supplies several catalog items (a list or table) and asks which "
                                                 "of them satisfy the customer's constraints.",

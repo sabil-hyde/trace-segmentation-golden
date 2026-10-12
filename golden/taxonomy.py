@@ -91,7 +91,7 @@ OPERATION_TIE_BREAKS = {
 }
 
 
-# Task pairs whose starter-pack definitions genuinely overlap (the same text fits both; docs/TAXONOMY_REVIEW.md).
+# Task pairs whose starter-pack definitions genuinely overlap (the same text fits both).
 # Gold labels are kept; the playground reports task accuracy both strictly and with these pairs forgiven.
 KNOWN_OVERLAPS = (
     ("retail_and_ecommerce.task.order_status", "logistics_and_transport.task.shipment_status"),

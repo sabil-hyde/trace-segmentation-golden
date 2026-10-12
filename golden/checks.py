@@ -23,7 +23,7 @@ from golden.vendor.minhash import MinHasher
 from golden import DEFAULT_DATA_DIR
 from golden.sessions import Session, load_sessions, read_jsonl_by_id
 
-PILOT_COST_PER_SEGMENT = 2.823 / 180          # measured on golden-v1-pilot
+PILOT_COST_PER_SEGMENT = 2.823 / 180          # measured on the 60-session pilot
 NEAR_DUP_JACCARD = 0.8
 SHORTCUT_F1_LIMIT = 0.5      # a single surface feature must not find boundaries better than this
 MIN_BOUNDARIES = 20          # below this the shortcut fit is too noisy to report
