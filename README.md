@@ -5,8 +5,6 @@ A test set for two questions we ask about agent traces, and a small tool for sco
 1. **Segmentation:** when a user sends a new message, are they starting a new task or continuing the current one?
 2. **Taxonomy:** which kind of work is a task? There are 64 types across 8 industries.
 
-> Status: the data is generated and machine-checked. A human review is still to do, so treat the results as provisional.
-
 ## How the data is built
 
 We don't label conversations after the fact. We decide the answers first and then write conversations that fit them.
@@ -14,7 +12,6 @@ We don't label conversations after the fact. We decide the answers first and the
 1. **Pick the answers.** Code chooses, from a fixed random seed, everything about each conversation: which tasks it contains, how many messages each task lasts, where the task changes, what kind of work each task is, and how each message should look. That file, `seeds.jsonl`, *is* the answer key.
 2. **Write the text.** A cheap model (Gemini 3.8 Flash) writes a realistic chat that follows those choices. Code rejects anything that breaks the rules and asks for a fix.
 3. **Check it blind.** A different model (GPT-6 Luna) labels every conversation without seeing the answers. Its disagreements show us where to look.
-4. **Review.** A person reads the conversations and accepts or rejects them. This step is still to do.
 
 **What we learned from the first version.** In v1, you could find almost every task change just by checking whether a message was long: new tasks opened with a long pasted document, and follow-ups were short. A simple length rule scored 0.98, so the test measured message length, not understanding.
 
@@ -94,7 +91,7 @@ answer and what the call cost. Then register it in `playground/classifiers/__ini
 ## What's in the repo
 
 ```
-golden/        builds the dataset: answers → text → blind check → viewer → review → export
+golden/        builds the dataset: answers → text → blind check → viewer → export
 playground/    scores models on it: baseline, Jev, any OpenRouter chat model; metrics and comparison
 data/golden-v2 the dataset
 runs/          the four runs above
