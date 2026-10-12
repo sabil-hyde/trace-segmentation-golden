@@ -1,0 +1,61 @@
+{
+ "version": "user_style-v1",
+ "note": "Hand-curated from user_style-candidates.json (style_mining.py). Real tau2 customer turns from the open traces (LLM-simulated customers), pseudonymized. Use for register, tone and formatting only, never content. pivot_inside_message turns move to another matter inside one message; followup_with_switch_words use 'also/another/actually' but stay on the same matter.",
+ "source_stats": {
+  "first_turn_chars": {
+   "p10": 92,
+   "p50": 194,
+   "p90": 308
+  },
+  "later_turn_chars": {
+   "p10": 62,
+   "p50": 153,
+   "p90": 304
+  },
+  "first_turn_multiline_share": 0.13,
+  "later_turn_multiline_share": 0.22
+ },
+ "examples": {
+  "short_followup": [
+   "I’ve turned mobile data off. Should I turn it back on now, or do you want me to check something first?",
+   "Okay, please let me know once roaming is enabled on my line. What should I do after that?",
+   "I actually don’t remember which email I used, but my name is Mei Kovacs and my zip code is 28236.",
+   "I tried running a speed test, but it failed and said \"No Connection.\" What should I do next?",
+   "I'm not sure how to find my customer ID and line ID. Could you tell me where to look or what to do next?",
+   "The reason is that I accidentally booked two flights for the same day, so I need to cancel one of them.",
+   "I actually don’t have an email address. Is there another way you can look up my order?"
+  ],
+  "pasted_followup": [
+   "Here’s what I found:\n\n1. Mobile Data is turned ON in my settings.\n2. My APN settings show the APN name as \"internet\" and the MMSC URL as \"http://mms.carrier.com/mms/wapenc,\" which I believe are correct.\n3. Should I go ahead and try toggling Mobile Data OFF and then ON again, or is there something el",
+   "I did it, but it still isn’t working.\n\n- **APN settings** showed: **APN Name: internet** and **MMSC URL: Not Set**.\n- I ran the **APN reset**, then did the **reboot** (I was nervous about my photos, but I think they’re still there).\n- After the restart, I checked again and **it still says my messagi",
+   "To answer your questions:\n\n1. Yes, I am currently abroad—in France.\n2. Data Saver mode is off.\n3. VPN is also turned off.\n\nDoes being in France affect my ability to use mobile data and send picture messages?",
+   "Here are the APN settings:\n\n- Current APN Name: internet\n- MMSC URL: http://mms.carrier.com/mms/wapenc\n\nLet me know if you want to make any changes or try something else. I still need excellent internet speed.",
+   "Here’s what I found:\n- Data Saver mode is ON.\n- VPN is connected (server performance is poor).\n- APN settings appear to be correct (APN name is \"internet\").\n\nShould I turn off Data Saver mode and disconnect the VPN now?",
+   "1) **check_apn_settings()**\n- APN name: **internet**\n- MMSC URL: **http://mms.carrier.com/mms/wapenc**\n\n2) **check_wifi_calling_status()**\n- Wi‑Fi Calling: **OFF**",
+   "Here’s what I see on my phone:\n\n- The status bar shows that Airplane Mode is on, VPN is connected, and my battery is at 80%.\n- I tried running a speed test, but it failed and said “No Connection.”\n\nWhat should I do next?",
+   "Here are the results from the checks you asked for:\n\n1. Network status: Airplane mode is off, SIM card is active, cellular connection is connected, but the signal strength is poor and the network type is 2G. Mobile data is enabled, data roaming is off, and Wi-Fi is off.\n2. Data Saver mode is off.\n3."
+  ],
+  "followup_with_switch_words": [
+   "I turned mobile data off and back on, and I also enabled data roaming since I am abroad. But the speed test still says \"No Connection.\" Is there anything else we can try? I really need excellent internet speed, not just any connection.",
+   "I turned mobile data off, and I also checked—Data Saver mode is on. Should I turn Data Saver off before turning mobile data back on, or do you want me to do something else first? I just want to make sure I’m doing this right.",
+   "I’m sorry, but I don’t remember the email address I used for the order. Is there another way you can look up my order? I can give you my name and zip code if that helps.",
+   "I checked my phone, and Data Saver mode is currently turned ON. Also, I’m connected to a VPN, but the server performance is listed as poor.\n\nWhat would you like me to do next?",
+   "Sure, my user ID is <USER_f88130>. I also have my confirmation number—it’s JMO1MG. Can you please tell me the total number of suitcases I’m allowed to bring? I really need the exact number.",
+   "Yes, the street number should be 445, not 443. Can you update my default address to 445 Maple Drive, Suite 394, Fort Worth, TX 76165? And could you also check if both orders are using the wrong address? If so, please fix those too.",
+   "Wait, so just to make sure I’m following—if I exchange my blue T-shirt for the red one, I’ll actually get money back on my gift card? That’s kind of cool! But what if I wanted to use the gift card to buy something else at the same time, like, say, another T-shirt or maybe a hat? Or does the refund h",
+   "I actually don’t have an email on my account. Is there another way you can look me up? My name is Ivan Hernandez and I live in San Diego, 92133.",
+   "Sorry, I actually don’t remember which email I used. Is there another way you can look up my account?",
+   "It looks like my phone says the SIM card status is \"missing,\" there’s no cellular service, and mobile data is not enabled. Also, data roaming is off. What does that mean? Is that bad?"
+  ],
+  "pivot_inside_message": [
+   "My user ID is <USER_c147a6>. It’ll be a round-trip flight.\n\nBut before we go further, I actually want to talk about something else. I’m really frustrated because my most recent reservation had a delayed flight, and it caused a lot of inconvenience.",
+   "Oh, you know what? I actually think I want to keep the grill after all. Sorry for the back and forth! \n\nBut while I have you, could you tell me which two t-shirts I ordered in another order? I can’t remember which ones I picked, and I’m also curious about what materials they’re made of.",
+   "Oh—if it’s already delivered, then never mind. I actually think I’m going to **keep the grill** after all, so please **don’t start a return**.\n\nWhile I have you: I placed another order that had **two t‑shirts**, and I can’t remember which ones I picked. Can you tell me **which two t‑shirts** they ar",
+   "I still want XEHM4B upgraded to economy. Do that first. Also, can you tell me if I have any other upcoming flights and what the total cost of those is?",
+   "Thanks for helping with that. One more thing—I recently bought a charger that goes with the tablet. Since the tablet is being exchanged, can you cancel the charger order?",
+   "Thanks for finding that. Before I confirm, I also need to return a smart watch and an e-reader from the same purchase. Can you check if those are on my account too and add them to the return as well?",
+   "I’d also like to return the sneaker. Can you help with that?",
+   "Oh wait, actually—sorry, I just changed my mind! I think I’d rather return the more expensive one, the gold tablet from order #W9571698. And could I get the refund as a gift card instead? That would be way more useful for me right now."
+  ]
+ }
+}
